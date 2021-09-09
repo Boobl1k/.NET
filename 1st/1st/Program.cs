@@ -16,8 +16,12 @@ namespace _1st
 
         private static bool TryParsOrQuit(string str, out int result)
         {
-            Console.WriteLine($"value is not int");
-            return int.TryParse(str, out result);
+            if (!int.TryParse(str, out result))
+            {
+                Console.WriteLine($"value is not int. The value was {str}");
+                return true;
+            }
+            return default;
         }
 
         private static int Calculate(int val1, string operation, int val2)
@@ -26,11 +30,11 @@ namespace _1st
             {
                 "+" => val1 + val2,
                 "-" => val1 - val2,
-                "*" => val1* val2,
+                "*" => val1 * val2,
                 "/" => val1 / val2,
                 _ => 0,
             };
-    }
+        }
 
         private const int NotEnoughtArgs = 1;
         private const int WrongArgFormat = 2;

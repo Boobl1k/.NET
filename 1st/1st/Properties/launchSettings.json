@@ -2,7 +2,7 @@
   "profiles": {
     "1st": {
       "commandName": "Project",
-      "commandLineArgs": "1 + "
+      "commandLineArgs": "1 + 6"
     }
   }
 }
