@@ -64,33 +64,9 @@ namespace CalculatorTask
             if (ParseCalculatiorOperation(args[1], out var operation))
                 return WrongOperation;
 
-            var result = Calculator.Calculate(val1, operation, val2);
+            var result = Calculator.Calculate(val1, val2,operation);
             Console.WriteLine($"Result : {result}");
 
             return 0;
         }
-    }
-
-    static class Calculator
-    {
-        public enum Operation
-        {
-            Plus,
-            Minus,
-            Divide,
-            Multiply,
-        }
-
-        public static int Calculate(int val1, Operation operation, int val2)
-        {
-            return operation switch
-            {
-                Operation.Plus => val1 + val2,
-                Operation.Minus => val1 - val2,
-                Operation.Multiply => val1 * val2,
-                Operation.Divide => val1 / val2,
-                _ => 0,
-            };
-        }
-    }
-}
+    }}
