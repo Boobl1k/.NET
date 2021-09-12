@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _1st
+namespace CalculatorTask
 {
     class Program
     {
@@ -24,34 +24,73 @@ namespace _1st
             return default;
         }
 
-        private static int Calculate(int val1, string operation, int val2)
+        private static bool ParseCalculatiorOperation(string arg, out Calculator.Operation operation)
         {
-            return operation switch
+            switch (arg)
             {
-                "+" => val1 + val2,
-                "-" => val1 - val2,
-                "*" => val1 * val2,
-                "/" => val1 / val2,
-                _ => 0,
+                case "+":
+                    operation = Calculator.Operation.Plus;
+                    break;
+                case "-":
+                    operation
+                    = Calculator.Operation.Minus;
+                    break;
+                case "*":
+                    operation =
+                 Calculator.Operation.Multiply;
+                    break;
+                case "/":
+                    operation = Calculator.Operation.Divide;
+                    break;
+                default:
+                    operation = default;
+                    return true;
             };
+            return false;
         }
 
         private const int NotEnoughtArgs = 1;
         private const int WrongArgFormat = 2;
+        private const int WrongOperation = 3;
 
         static int Main(string[] args)
         {
             if (CheckArgsLenght(args))
                 return NotEnoughtArgs;
 
-            var operation = args[1];
             if (TryParsOrQuit(args[0], out var val1) || TryParsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
-            var result = Calculate(val1, operation, val2);
+            if (ParseCalculatiorOperation(args[1], out var operation))
+                return WrongOperation;
+
+            var result = Calculator.Calculate(val1, operation, val2);
             Console.WriteLine($"Result : {result}");
 
             return 0;
+        }
+    }
+
+    static class Calculator
+    {
+        public enum Operation
+        {
+            Plus,
+            Minus,
+            Divide,
+            Multiply,
+        }
+
+        public static int Calculate(int val1, Operation operation, int val2)
+        {
+            return operation switch
+            {
+                Operation.Plus => val1 + val2,
+                Operation.Minus => val1 - val2,
+                Operation.Multiply => val1 * val2,
+                Operation.Divide => val1 / val2,
+                _ => 0,
+            };
         }
     }
 }
