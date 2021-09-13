@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: "**"
   pull_request:
-    branches: [ main ]
+    branches: "**"
 
 jobs:
   build:
@@ -23,3 +23,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Codecov
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        file: ./report.xml
+      
