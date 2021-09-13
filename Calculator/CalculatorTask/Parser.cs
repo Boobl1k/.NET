@@ -1,42 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CalculatorTask
 {
     public static class Parser
     {
-        public static bool ParseCalculatiorOperation(string arg, out Calculator.Operation operation)
-        {
-            switch (arg)
+        public static Calculator.Operation ParseCalculatorOperation(string arg) =>
+            arg switch
             {
-                case "+":
-                    operation = Calculator.Operation.Plus;
-                    break;
-                case "-":
-                    operation
-                    = Calculator.Operation.Minus;
-                    break;
-                case "*":
-                    operation =
-                 Calculator.Operation.Multiply;
-                    break;
-                case "/":
-                    operation = Calculator.Operation.Divide;
-                    break;
-                default:
-                    operation = default;
-                    return true;
+                "+" => Calculator.Operation.Plus,
+                "-" => Calculator.Operation.Minus,
+                "*" => Calculator.Operation.Multiply,
+                "/" => Calculator.Operation.Divide,
+                _ => default
             };
-            return false;
-        }
+
         public static bool TryParsOrQuit(string str, out int result)
         {
-            if (!int.TryParse(str, out result))
-            {
-                Console.WriteLine($"value is not int. The value was {str}");
-                return true;
-            }
+            if (int.TryParse(str, out result)) return true;
+            Console.WriteLine($"value is not int. The value was {str}");
             return default;
         }
     }

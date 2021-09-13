@@ -1,3 +1,4 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CalculatorTask;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
@@ -34,9 +35,40 @@ namespace CalculatorTask.Tests
         [TestMethod]
         public void Quotient()
         {
+            try
+            {
+                Calculator.Calculate(1, 0, Calculator.Operation.Divide);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(Calculator.DevByZero, e);
+            }
+
             Assert.AreEqual(8394 / 165, Calculator.Calculate(8394, 165, Calculator.Operation.Divide));
             Assert.AreEqual(235216 / 13453, Calculator.Calculate(235216, 13453, Calculator.Operation.Divide));
             Assert.AreEqual(37659 / 35676613, Calculator.Calculate(37659, 35676613, Calculator.Operation.Divide));
+        }
+        
+        [TestMethod]
+        public void UnassignedOperationCalculator()
+        {
+            try
+            {
+                Calculator.Calculate(1, 1, default);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(Calculator.WrongOperation, e);
+            }
+
+            try
+            {
+                Calculator.Calculate(1, 1, (Calculator.Operation) (10));
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(Calculator.OutOfRange, e);
+            }
         }
 
         [TestMethod]
@@ -51,18 +83,16 @@ namespace CalculatorTask.Tests
         [TestMethod]
         public void Parser()
         {
-            Assert.AreEqual(false, CalculatorTask.Parser.TryParsOrQuit("1", out var numParsResult));
+            Assert.AreEqual(false, CalculatorTask.Parser.TryParsOrQuit("a", out _));
+            
+            Assert.AreEqual(true, CalculatorTask.Parser.TryParsOrQuit("1", out var numParsResult));
             Assert.AreEqual(1, numParsResult);
             
-            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("/", out var operationParsResult));
-            Assert.AreEqual(Calculator.Operation.Divide, operationParsResult);
-            
-            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("-", out operationParsResult));
-            Assert.AreEqual(Calculator.Operation.Minus,operationParsResult);
-            
-            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("*",out operationParsResult));
-            Assert.AreEqual(Calculator.Operation.Multiply, operationParsResult);
+            Assert.AreEqual(Calculator.Operation.Divide, CalculatorTask.Parser.ParseCalculatorOperation("/"));
+            Assert.AreEqual(Calculator.Operation.Minus,CalculatorTask.Parser.ParseCalculatorOperation("-"));
+            Assert.AreEqual(Calculator.Operation.Multiply, CalculatorTask.Parser.ParseCalculatorOperation("*"));
         }
+        
         
     }
 }
