@@ -38,5 +38,4 @@ namespace CalculatorTask.Tests
             Assert.AreEqual(37659 / 35676613, Calculator.Calculate(37659, 35676613, Calculator.Operation.Divide));
         }
     }
-
 }
