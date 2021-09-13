@@ -39,6 +39,4 @@ namespace CalculatorTask.Tests
         }
     }
 
-    [TestClass]
-    public class 
 }
