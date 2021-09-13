@@ -14,9 +14,9 @@ namespace CalculatorTask
             return false;
         }
 
-        private const int NotEnoughtArgs = 1;
-        private const int WrongArgFormat = 2;
-        private const int WrongOperation = 3;
+        private const int NotEnoughtArgs = 0;
+        private const int WrongArgFormat = 0;
+        private const int WrongOperation = 0;
 
         static int Main(string[] args)
         {
