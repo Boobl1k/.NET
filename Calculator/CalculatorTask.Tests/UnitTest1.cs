@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CalculatorTask;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace CalculatorTask.Tests
 {
@@ -41,8 +42,27 @@ namespace CalculatorTask.Tests
         [TestMethod]
         public void Main()
         {
-
+            Assert.AreEqual(0, Program.Main(new [] {"1","+","1"}));
+            Assert.AreEqual(1, Program.Main(new [] {""}));
+            Assert.AreEqual(2, Program.Main(new [] {"r","+","t"}));
+            Assert.AreEqual(3, Program.Main(new [] {"1","t","1"}));
         }
+
+        [TestMethod]
+        public void Parser()
+        {
+            Assert.AreEqual(false, CalculatorTask.Parser.TryParsOrQuit("1", out var numParsResult));
+            Assert.AreEqual(1, numParsResult);
+            
+            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("/", out var operationParsResult));
+            Assert.AreEqual(Calculator.Operation.Divide, operationParsResult);
+            
+            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("-", out operationParsResult));
+            Assert.AreEqual(Calculator.Operation.Minus,operationParsResult);
+            
+            Assert.AreEqual(false, CalculatorTask.Parser.ParseCalculatiorOperation("*",out operationParsResult));
+            Assert.AreEqual(Calculator.Operation.Multiply, operationParsResult);
+        }
+        
     }
 }
-

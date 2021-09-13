@@ -2,7 +2,7 @@
 
 namespace CalculatorTask
 {
-    class Program
+    public class Program
     {
         private static bool CheckArgsLenght(string[] args)
         {
@@ -18,7 +18,7 @@ namespace CalculatorTask
         private const int WrongArgFormat = 2;
         private const int WrongOperation = 3;
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             if (CheckArgsLenght(args))
                 return NotEnoughtArgs;
