@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SolutionRoot CoveredStatements="45" TotalStatements="45" CoveragePercent="100" ReportType="Xml" DotCoverVersion="2021.2.1">
+  <Project Name="CalculatorTask" CoveredStatements="45" TotalStatements="45" CoveragePercent="100">
+    <Namespace Name="CalculatorTask" CoveredStatements="45" TotalStatements="45" CoveragePercent="100">
+      <Type Name="Calculator" CoveredStatements="15" TotalStatements="15" CoveragePercent="100">
+        <Constructor Name="Calculator()" CoveredStatements="3" TotalStatements="3" CoveragePercent="100" />
+        <Method Name="Calculate(int,int,Operation):int" CoveredStatements="12" TotalStatements="12" CoveragePercent="100" />
+      </Type>
+      <Type Name="Parser" CoveredStatements="12" TotalStatements="12" CoveragePercent="100">
+        <Method Name="ParseCalculatorOperation(string):Calculator.Operation" CoveredStatements="6" TotalStatements="6" CoveragePercent="100" />
+        <Method Name="TryParsOrQuit(string,out int):bool" CoveredStatements="6" TotalStatements="6" CoveragePercent="100" />
+      </Type>
+      <Type Name="Program" CoveredStatements="18" TotalStatements="18" CoveragePercent="100">
+        <Method Name="CheckArgsLength(string[]):bool" CoveredStatements="6" TotalStatements="6" CoveragePercent="100" />
+        <Method Name="Main(string[]):int" CoveredStatements="12" TotalStatements="12" CoveragePercent="100" />
+      </Type>
+    </Namespace>
+  </Project>
+</SolutionRoot>
