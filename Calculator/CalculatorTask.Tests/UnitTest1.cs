@@ -37,6 +37,12 @@ namespace CalculatorTask.Tests
             Assert.AreEqual(235216 / 13453, Calculator.Calculate(235216, 13453, Calculator.Operation.Divide));
             Assert.AreEqual(37659 / 35676613, Calculator.Calculate(37659, 35676613, Calculator.Operation.Divide));
         }
+
+        [TestMethod]
+        public void Main()
+        {
+
+        }
     }
 }
 
