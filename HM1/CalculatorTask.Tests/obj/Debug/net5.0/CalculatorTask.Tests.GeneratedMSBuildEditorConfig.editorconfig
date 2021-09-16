@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = CalculatorTask.Tests
-build_property.ProjectDir = C:\Users\bod\Desktop\.NET\Calculator\CalculatorTask.Tests\
+build_property.ProjectDir = C:\Users\bod\Desktop\.NET\HM1\CalculatorTask.Tests\

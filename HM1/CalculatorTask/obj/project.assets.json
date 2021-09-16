@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bod\\Desktop\\.NET\\Calculator\\CalculatorTask\\CalculatorTask.csproj",
+      "projectUniqueName": "C:\\Users\\bod\\Desktop\\.NET\\HM1\\CalculatorTask\\CalculatorTask.csproj",
       "projectName": "CalculatorTask",
-      "projectPath": "C:\\Users\\bod\\Desktop\\.NET\\Calculator\\CalculatorTask\\CalculatorTask.csproj",
+      "projectPath": "C:\\Users\\bod\\Desktop\\.NET\\HM1\\CalculatorTask\\CalculatorTask.csproj",
       "packagesPath": "C:\\Users\\bod\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bod\\Desktop\\.NET\\Calculator\\CalculatorTask\\obj\\",
+      "outputPath": "C:\\Users\\bod\\Desktop\\.NET\\HM1\\CalculatorTask\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

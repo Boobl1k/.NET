@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xsmZHabpn3CdwJFkqPillrs/peNUmtdPhDubxv0sAw9tkZL4Ttz1Jh+hoxKdYqZKskXCbCI5WxKu1e/dQu04lg==",
+  "dgSpecHash": "SrQfhS5TvMWGRtOVkM4mmvn11JiizhbpNl3OW85nYjN3WLBUWI4xdU1xgE/uqodzxqJcStHgNslnCHdExYlF0w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\bod\\Desktop\\.NET\\Calculator\\CalculatorTask.Tests\\CalculatorTask.Tests.csproj",
+  "projectFilePath": "C:\\Users\\bod\\Desktop\\.NET\\HM1\\CalculatorTask.Tests\\CalculatorTask.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bod\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
     "C:\\Users\\bod\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
