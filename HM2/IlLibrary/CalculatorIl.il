@@ -37,8 +37,8 @@
     ldstr "[IL] : Calling Calculator.Calculate with operation: "
     ldarg.s operationNumber
     box IlLibrary.CalculatorIl/Operation
-    callvirt instance string [System.Runtime]System.Object::ToString()
-    call string [System.Runtime]System.String::Concat(string, string)
+    callvirt instance string System.Object::ToString()
+    call string System.String::Concat(string, string)
     call void [System.Console]System.Console::WriteLine(object)
     
     ldarg.s val1

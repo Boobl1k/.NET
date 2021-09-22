@@ -16,19 +16,19 @@
     // [8 13 - 15 14]
     IL_0000: ldarg.0      // arg
     IL_0001: ldstr        "+"
-    IL_0006: call         bool [System.Runtime]System.String::op_Equality(string, string)
+    IL_0006: call         bool System.String::op_Equality(string, string)
     IL_000b: brtrue.s     IL_0036
     IL_000d: ldarg.0      // arg
     IL_000e: ldstr        "-"
-    IL_0013: call         bool [System.Runtime]System.String::op_Equality(string, string)
+    IL_0013: call         bool System.String::op_Equality(string, string)
     IL_0018: brtrue.s     IL_003a
     IL_001a: ldarg.0      // arg
     IL_001b: ldstr        "*"
-    IL_0020: call         bool [System.Runtime]System.String::op_Equality(string, string)
+    IL_0020: call         bool System.String::op_Equality(string, string)
     IL_0025: brtrue.s     IL_003e
     IL_0027: ldarg.0      // arg
     IL_0028: ldstr        "/"
-    IL_002d: call         bool [System.Runtime]System.String::op_Equality(string, string)
+    IL_002d: call         bool System.String::op_Equality(string, string)
     IL_0032: brtrue.s     IL_0042
     IL_0034: br.s         IL_0046
 
