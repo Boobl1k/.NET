@@ -22,7 +22,7 @@ namespace CalculatorTask
             if (CheckArgsLength(args))
                 return NotEnoughArgs;
 
-            if (!Parser.TryParsOrQuit(args[0], out var val1) || !Parser.TryParsOrQuit(args[2], out var val2))
+            if (!ParserIl.TryParsOrQuit(args[0], out var val1) || !ParserIl.TryParsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
             var operation = ParserIl.ParseCalculatorOperation(args[1]);
