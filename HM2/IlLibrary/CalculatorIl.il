@@ -8,7 +8,7 @@
 {
   .class nested public sealed auto ansi
     Operation
-      extends [System.Runtime]System.Enum
+      extends System.Enum
   {
 
     .field public specialname rtspecialname int32 value__
