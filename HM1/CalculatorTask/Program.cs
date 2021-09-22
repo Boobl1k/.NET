@@ -19,22 +19,19 @@ namespace CalculatorTask
 
         public static int Main(string[] args)
         {
-            /*if (CheckArgsLength(args))
+            if (CheckArgsLength(args))
                 return NotEnoughArgs;
 
             if (!Parser.TryParsOrQuit(args[0], out var val1) || !Parser.TryParsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
-            var operation = Parser.ParseCalculatorOperation(args[1]);
+            var operation = ParserIl.ParseCalculatorOperation(args[1]);
             if (operation == default)
                 return WrongOperation;
 
-            var result = Calculator.Calculate(val1, val2, operation);
+            var result = CalculatorIl.Calculate(val1, val2, operation);
             Console.WriteLine($"Result : {result}");
 
-            return 0;*/
-            Console.WriteLine(CalculatorIl.CalculateForCS(3, 4, 1));
-            
             return 0;
         }
     }
