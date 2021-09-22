@@ -1,4 +1,5 @@
 ﻿using System;
+using IlLibrary;
 
 namespace CalculatorTask
 {
@@ -18,7 +19,7 @@ namespace CalculatorTask
 
         public static int Main(string[] args)
         {
-            if (CheckArgsLength(args))
+            /*if (CheckArgsLength(args))
                 return NotEnoughArgs;
 
             if (!Parser.TryParsOrQuit(args[0], out var val1) || !Parser.TryParsOrQuit(args[2], out var val2))
@@ -31,6 +32,9 @@ namespace CalculatorTask
             var result = Calculator.Calculate(val1, val2, operation);
             Console.WriteLine($"Result : {result}");
 
+            return 0;*/
+            Console.WriteLine(CalculatorIl.CalculateForCS(3, 4, 1));
+            
             return 0;
         }
     }
