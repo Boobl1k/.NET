@@ -6,4 +6,8 @@
     <RootNamespace>CalculatorTask</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\HM2\IlLibrary\IlLibrary.ilproj" />
+  </ItemGroup>
+
 </Project>

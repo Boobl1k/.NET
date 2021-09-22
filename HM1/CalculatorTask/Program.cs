@@ -1,4 +1,5 @@
 ﻿using System;
+using IlLibrary;
 
 namespace CalculatorTask
 {
@@ -21,14 +22,14 @@ namespace CalculatorTask
             if (CheckArgsLength(args))
                 return NotEnoughArgs;
 
-            if (!Parser.TryParsOrQuit(args[0], out var val1) || !Parser.TryParsOrQuit(args[2], out var val2))
+            if (!ParserIl.TryParsOrQuit(args[0], out var val1) || !ParserIl.TryParsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
-            var operation = Parser.ParseCalculatorOperation(args[1]);
+            var operation = ParserIl.ParseCalculatorOperation(args[1]);
             if (operation == default)
                 return WrongOperation;
 
-            var result = Calculator.Calculate(val1, val2, operation);
+            var result = CalculatorIl.Calculate(val1, val2, operation);
             Console.WriteLine($"Result : {result}");
 
             return 0;
