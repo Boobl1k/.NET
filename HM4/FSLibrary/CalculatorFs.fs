@@ -26,5 +26,4 @@ module CalculatorFs =
             with
             | :? System.DivideByZeroException -> failwith DevByZero
         | Multiply -> val1 * val2
-        | _ -> failwith OutOfRange
     
