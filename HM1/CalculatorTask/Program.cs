@@ -1,5 +1,5 @@
 ﻿using System;
-using IlLibrary;
+using FSLibrary;
 
 namespace CalculatorTask
 {
@@ -22,14 +22,14 @@ namespace CalculatorTask
             if (CheckArgsLength(args))
                 return NotEnoughArgs;
 
-            if (!ParserIl.TryParsOrQuit(args[0], out var val1) || !ParserIl.TryParsOrQuit(args[2], out var val2))
+            if (!ParserFs.TryParsOrQuit(args[0], out var val1) || !ParserFs.TryParsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
-            var operation = ParserIl.ParseCalculatorOperation(args[1]);
-            if (operation == default)
+            var operation = ParserFs.ParseCalculatorOperation(args[1]);
+            if (operation == CalculatorFs.Operation.Unassigned)
                 return WrongOperation;
 
-            var result = CalculatorIl.Calculate(val1, val2, operation);
+            var result = CalculatorFs.Calculate(val1, val2, operation);
             Console.WriteLine($"Result : {result}");
 
             return 0;
