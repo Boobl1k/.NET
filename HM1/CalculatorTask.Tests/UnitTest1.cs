@@ -1,35 +1,35 @@
 using System;
 using CalculatorTask;
-using IlLibrary;
+using FSLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CalculatorIlTask.Tests
+namespace CalculatorFsTask.Tests
 {
     [TestClass]
-    public class CalculatorIlTests
+    public class CalculatorFsTests
     {
         [TestMethod]
         public void Sum()
         {
-            Assert.AreEqual(2 + 2, CalculatorIl.Calculate(2, 2, CalculatorIl.Operation.Plus));
-            Assert.AreEqual(3 + 7, CalculatorIl.Calculate(3, 7, CalculatorIl.Operation.Plus));
-            Assert.AreEqual(12947 + 12375123, CalculatorIl.Calculate(12947, 12375123, CalculatorIl.Operation.Plus));
+            Assert.AreEqual(2 + 2, CalculatorFs.Calculate(2, 2, CalculatorFs.Operation.Plus));
+            Assert.AreEqual(3 + 7, CalculatorFs.Calculate(3, 7, CalculatorFs.Operation.Plus));
+            Assert.AreEqual(12947 + 12375123, CalculatorFs.Calculate(12947, 12375123, CalculatorFs.Operation.Plus));
         }
 
         [TestMethod]
         public void Difference()
         {
-            Assert.AreEqual(2 - 2, CalculatorIl.Calculate(2, 2, CalculatorIl.Operation.Minus));
-            Assert.AreEqual(235 - 634, CalculatorIl.Calculate(235, 634, CalculatorIl.Operation.Minus));
-            Assert.AreEqual(183945 - 129385, CalculatorIl.Calculate(183945, 129385, CalculatorIl.Operation.Minus));
+            Assert.AreEqual(2 - 2, CalculatorFs.Calculate(2, 2, CalculatorFs.Operation.Minus));
+            Assert.AreEqual(235 - 634, CalculatorFs.Calculate(235, 634, CalculatorFs.Operation.Minus));
+            Assert.AreEqual(183945 - 129385, CalculatorFs.Calculate(183945, 129385, CalculatorFs.Operation.Minus));
         }
 
         [TestMethod]
         public void Product()
         {
-            Assert.AreEqual(4 * 231, CalculatorIl.Calculate(4, 231, CalculatorIl.Operation.Multiply));
-            Assert.AreEqual(43465 * 23421, CalculatorIl.Calculate(43465, 23421, CalculatorIl.Operation.Multiply));
-            Assert.AreEqual(12345 * 4623, CalculatorIl.Calculate(12345, 4623, CalculatorIl.Operation.Multiply));
+            Assert.AreEqual(4 * 231, CalculatorFs.Calculate(4, 231, CalculatorFs.Operation.Multiply));
+            Assert.AreEqual(43465 * 23421, CalculatorFs.Calculate(43465, 23421, CalculatorFs.Operation.Multiply));
+            Assert.AreEqual(12345 * 4623, CalculatorFs.Calculate(12345, 4623, CalculatorFs.Operation.Multiply));
         }
 
         [TestMethod]
@@ -37,62 +37,61 @@ namespace CalculatorIlTask.Tests
         {
             try
             {
-                CalculatorIl.Calculate(1, 0, CalculatorIl.Operation.Divide);
+                CalculatorFs.Calculate(1, 0, CalculatorFs.Operation.Divide);
             }
             catch (Exception e)
             {
                 Assert.AreEqual(Calculator.DevByZero.Message, e.Message);
             }
 
-            Assert.AreEqual(8394 / 165, CalculatorIl.Calculate(8394, 165, CalculatorIl.Operation.Divide));
-            Assert.AreEqual(235216 / 13453, CalculatorIl.Calculate(235216, 13453, CalculatorIl.Operation.Divide));
-            Assert.AreEqual(37659 / 35676613, CalculatorIl.Calculate(37659, 35676613, CalculatorIl.Operation.Divide));
+            Assert.AreEqual(8394 / 165, CalculatorFs.Calculate(8394, 165, CalculatorFs.Operation.Divide));
+            Assert.AreEqual(235216 / 13453, CalculatorFs.Calculate(235216, 13453, CalculatorFs.Operation.Divide));
+            Assert.AreEqual(37659 / 35676613, CalculatorFs.Calculate(37659, 35676613, CalculatorFs.Operation.Divide));
         }
-        
+
         [TestMethod]
-        public void UnassignedOperationCalculatorIl()
+        public void UnassignedOperationCalculatorFs()
         {
             try
             {
-                CalculatorIl.Calculate(1, 1, default);
+                CalculatorFs.Calculate(1, 1, CalculatorFs.Operation.Unassigned);
             }
             catch (Exception e)
             {
                 Assert.AreEqual(Calculator.WrongOperation.Message, e.Message);
             }
 
-            try
+            //unusable for f#s enum analog
+            /*try
             {
-                CalculatorIl.Calculate(1, 1, (CalculatorIl.Operation) (10));
+                CalculatorFs.Calculate(1, 1, (CalculatorFs.Operation) (10));
             }
             catch (Exception e)
             {
                 Assert.AreEqual(Calculator.OutOfRange.Message, e.Message);
-            }
+            }*/
         }
 
         [TestMethod]
-        public void Main()
-        {
-            Assert.AreEqual(0, Program.Main(new [] {"1","+","1"}));
-            Assert.AreEqual(1, Program.Main(new [] {""}));
-            Assert.AreEqual(2, Program.Main(new [] {"r","+","t"}));
-            Assert.AreEqual(3, Program.Main(new [] {"1","t","1"}));
-        }
+        public void Main1() => Assert.AreEqual(0, Program.Main(new[] {"1", "+", "1"}));
+        [TestMethod]
+        public void Main2() => Assert.AreEqual(1, Program.Main(new[] {""}));
+        [TestMethod]
+        public void Main3() => Assert.AreEqual(2, Program.Main(new[] {"r", "+", "t"}));
+        [TestMethod]
+        public void Main4() => Assert.AreEqual(3, Program.Main(new[] {"1", "t", "1"}));
 
         [TestMethod]
         public void Parser()
         {
-            Assert.AreEqual(false, ParserIl.TryParsOrQuit("a", out _));
-            
-            Assert.AreEqual(true, ParserIl.TryParsOrQuit("1", out var numParsResult));
+            Assert.AreEqual(false, ParserFs.TryParsOrQuit("a", out _));
+
+            Assert.AreEqual(true, ParserFs.TryParsOrQuit("1", out var numParsResult));
             Assert.AreEqual(1, numParsResult);
-            
-            Assert.AreEqual(CalculatorIl.Operation.Divide, ParserIl.ParseCalculatorOperation("/"));
-            Assert.AreEqual(CalculatorIl.Operation.Minus, ParserIl.ParseCalculatorOperation("-"));
-            Assert.AreEqual(CalculatorIl.Operation.Multiply, ParserIl.ParseCalculatorOperation("*"));
+
+            Assert.AreEqual(CalculatorFs.Operation.Divide, ParserFs.ParseCalculatorOperation("/"));
+            Assert.AreEqual(CalculatorFs.Operation.Minus, ParserFs.ParseCalculatorOperation("-"));
+            Assert.AreEqual(CalculatorFs.Operation.Multiply, ParserFs.ParseCalculatorOperation("*"));
         }
-        
-        
     }
 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\HM2\IlLibrary\IlLibrary.ilproj" />
+    <ProjectReference Include="..\..\HM4\FSLibrary\FSLibrary.fsproj" />
   </ItemGroup>
 
 </Project>
