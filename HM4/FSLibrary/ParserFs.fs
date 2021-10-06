@@ -12,9 +12,7 @@ namespace FSLibrary
             | _ -> CalculatorFs.Operation.Unassigned
             
         let TryParsOrQuit (str:string) (result:outref<int>) =
-            let valueRef = ref 0;  
-            if Int32.TryParse(str, valueRef) then
-                result <- !valueRef
+            if Int32.TryParse(str, &result) then
                 true
             else
                 Console.WriteLine($"value is not int. The value was {str}");
