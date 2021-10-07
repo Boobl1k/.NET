@@ -5,9 +5,9 @@ namespace StarterConsole
 {
     public static class Program
     {
-        public static Exception NotEnoughArgs = new Exception("not enough arguments");
+        public static readonly Exception NotEnoughArgs = new Exception("not enough arguments");
         
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             if (args.Length < 3)
                 throw NotEnoughArgs;
@@ -35,6 +35,7 @@ namespace StarterConsole
             var result = calculationRes.ResultValue;
             
             Console.WriteLine($"result is {result}");
+            return 0;
         }
     }
 }

@@ -7,6 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSLibraryResult", "HM5\FSLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterConsole", "HM5\StarterConsole\StarterConsole.csproj", "{2421F278-3B40-4F60-9BA1-69BD9885C4AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSResultTests", "HM5\FSResultTests\FSResultTests.csproj", "{4E4DCA49-EB15-4840-A20C-875731A41D0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{2421F278-3B40-4F60-9BA1-69BD9885C4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2421F278-3B40-4F60-9BA1-69BD9885C4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2421F278-3B40-4F60-9BA1-69BD9885C4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E4DCA49-EB15-4840-A20C-875731A41D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4DCA49-EB15-4840-A20C-875731A41D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E4DCA49-EB15-4840-A20C-875731A41D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4DCA49-EB15-4840-A20C-875731A41D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

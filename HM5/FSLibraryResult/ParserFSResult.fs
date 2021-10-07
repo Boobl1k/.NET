@@ -13,7 +13,7 @@ module ParserFs =
         | "/" -> Ok CalculatorFs.Operation.Divide
         | _ -> Error WrongOperation
 
-    let valueError = "value is not int"
+    let numberError = "value is not int"
 
     let ParseNumber (str: string) =
         let result = ref 0
@@ -21,4 +21,4 @@ module ParserFs =
         if Int32.TryParse(str, result) then
             Ok(!result)
         else
-            Error valueError
+            Error numberError
