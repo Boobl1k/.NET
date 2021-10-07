@@ -11,9 +11,9 @@ module ParserFs =
         | "/" -> CalculatorFs.Operation.Divide
         | _ -> CalculatorFs.Operation.Unassigned
 
-    let TryParsOrQuit (str: string) (result: outref<int>) =
-        if Int32.TryParse(str, &result) then
-            true
+    let ParseNumber (str: string) =
+        let result = ref 0
+        if Int32.TryParse(str, result) then
+            Ok(!result)
         else
-            Console.WriteLine($"value is not int. The value was {str}")
-            false
+            Error $"value is not int. The value was {str}"
