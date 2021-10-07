@@ -1,21 +1,16 @@
 ﻿namespace FSLibraryResult
 
 module CalculatorFs =
-    let DevByZero =
-        "val2 was 0"
-    let WrongOperation =
-        "Wrong operation"
-    
+    let DevByZero = "val2 was 0"
+
     type Operation =
-    | Unassigned
-    | Plus
-    | Minus
-    | Divide
-    | Multiply
-    
-    let Calculate (val1:int) (val2:int) operation =
+        | Plus
+        | Minus
+        | Divide
+        | Multiply
+
+    let Calculate (val1: int) (val2: int) operation =
         match operation with
-        | Unassigned -> Error WrongOperation
         | Plus -> Ok(val1 + val2)
         | Minus -> Ok(val1 - val2)
         | Divide ->
