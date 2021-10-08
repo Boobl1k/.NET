@@ -112,9 +112,26 @@ namespace FSResultTests
         [TestMethod]
         public void WrongNumber()
         {
-            var res = ParserFs.ParseNumber("a");
+            var res = ParserFs.ParseInt("a");
             Assert.IsTrue(res.IsError);
             Assert.AreEqual(ParserFs.numberError, res.ErrorValue);
+        }
+
+        [TestMethod]
+        public void AllTypes()
+        {
+            var res1 = ParserFs.ParseInt("1");
+            Assert.IsTrue(res1.IsOk);
+            Assert.AreEqual(1, res1.ResultValue);
+            var res2 = ParserFs.ParseDouble("1");
+            Assert.IsTrue(res2.IsOk);
+            Assert.AreEqual(1.0, res2.ResultValue);
+            var res3 = ParserFs.ParseDecimal("1");
+            Assert.IsTrue(res3.IsOk);
+            Assert.AreEqual(1m, res3.ResultValue);
+            var res4 = ParserFs.ParseFloat("1");
+            Assert.IsTrue(res4.IsOk);
+            Assert.AreEqual(1.0f, res4.ResultValue);
         }
 
         [TestMethod]

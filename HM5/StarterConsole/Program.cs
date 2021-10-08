@@ -12,8 +12,8 @@ namespace StarterConsole
             if (args.Length < 3)
                 throw NotEnoughArgs;
             
-            var num1Res = ParserFs.ParseNumber(args[0]);
-            var num2Res = ParserFs.ParseNumber(args[2]);
+            var num1Res = ParserFs.ParseInt(args[0]);
+            var num2Res = ParserFs.ParseInt(args[2]);
             var operationRes = ParserFs.ParseCalculatorOperation(args[1]);
 
             if (num1Res.IsError)
