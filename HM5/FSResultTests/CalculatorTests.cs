@@ -17,30 +17,84 @@ namespace FSResultTests
         }
 
         [TestMethod]
-        public void Calculate()
+        public void CalculateInts()
         {
             for (var i = 0; i < 20; ++i)
-                for (var j = 1; j < 21; ++j)
-                {
-                    var plusRes = 
-                        CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Plus);
-                    var minusRes = 
-                        CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Minus);
-                    var multiplicationRes = 
-                        CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Multiply);
-                    var divRes =
-                        CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Divide);
+            for (var j = 1; j < 21; ++j)
+            {
+                var plusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Plus);
+                var minusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Minus);
+                var multiplicationRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Multiply);
+                var divRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Divide);
 
-                    Assert.IsTrue(plusRes.IsOk);
-                    Assert.IsTrue(minusRes.IsOk);
-                    Assert.IsTrue(multiplicationRes.IsOk);
-                    Assert.IsTrue(divRes.IsOk);
+                Assert.IsTrue(plusRes.IsOk);
+                Assert.IsTrue(minusRes.IsOk);
+                Assert.IsTrue(multiplicationRes.IsOk);
+                Assert.IsTrue(divRes.IsOk);
 
-                    Assert.AreEqual(i + j, plusRes.ResultValue);
-                    Assert.AreEqual(i - j, minusRes.ResultValue);
-                    Assert.AreEqual(i * j, multiplicationRes.ResultValue);
-                    Assert.AreEqual(i / j, divRes.ResultValue);
-                }
+                Assert.AreEqual(i + j, plusRes.ResultValue);
+                Assert.AreEqual(i - j, minusRes.ResultValue);
+                Assert.AreEqual(i * j, multiplicationRes.ResultValue);
+                Assert.AreEqual(i / j, divRes.ResultValue);
+            }
+        }
+
+        [TestMethod]
+        public void CalculateDoubles()
+        {
+            for (var i = 0.5; i < 20; ++i)
+            for (var j = 1.5; j < 21; ++j)
+            {
+                var plusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Plus);
+                var minusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Minus);
+                var multiplicationRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Multiply);
+                var divRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Divide);
+
+                Assert.IsTrue(plusRes.IsOk);
+                Assert.IsTrue(minusRes.IsOk);
+                Assert.IsTrue(multiplicationRes.IsOk);
+                Assert.IsTrue(divRes.IsOk);
+
+                Assert.AreEqual(i + j, plusRes.ResultValue);
+                Assert.AreEqual(i - j, minusRes.ResultValue);
+                Assert.AreEqual(i * j, multiplicationRes.ResultValue);
+                Assert.AreEqual(i / j, divRes.ResultValue);
+            }
+        }
+
+        [TestMethod]
+        public void CalculateDecimals()
+        {
+            for (var i = 0.5m; i < 20; ++i)
+            for (var j = 1.5m; j < 21; ++j)
+            {
+                var plusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Plus);
+                var minusRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Minus);
+                var multiplicationRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Multiply);
+                var divRes =
+                    CalculatorFs.Calculate(i, j, CalculatorFs.Operation.Divide);
+
+                Assert.IsTrue(plusRes.IsOk);
+                Assert.IsTrue(minusRes.IsOk);
+                Assert.IsTrue(multiplicationRes.IsOk);
+                Assert.IsTrue(divRes.IsOk);
+
+                Assert.AreEqual(i + j, plusRes.ResultValue);
+                Assert.AreEqual(i - j, minusRes.ResultValue);
+                Assert.AreEqual(i * j, multiplicationRes.ResultValue);
+                Assert.AreEqual(i / j, divRes.ResultValue);
+            }
         }
     }
 
@@ -70,12 +124,12 @@ namespace FSResultTests
             var resMinus = ParserFs.ParseCalculatorOperation("-");
             var resMultiplication = ParserFs.ParseCalculatorOperation("*");
             var resDiv = ParserFs.ParseCalculatorOperation("/");
-            
+
             Assert.IsTrue(resPlus.IsOk);
             Assert.IsTrue(resMinus.IsOk);
             Assert.IsTrue(resMultiplication.IsOk);
             Assert.IsTrue(resDiv.IsOk);
-            
+
             Assert.AreEqual(CalculatorFs.Operation.Plus, resPlus.ResultValue);
             Assert.AreEqual(CalculatorFs.Operation.Minus, resMinus.ResultValue);
             Assert.AreEqual(CalculatorFs.Operation.Multiply, resMultiplication.ResultValue);
@@ -87,8 +141,8 @@ namespace FSResultTests
     public class Main
     {
         [TestMethod]
-        public void GoodInput() => 
-            Assert.AreEqual(0, Program.Main(new []{"1", "+", "2"}));
+        public void GoodInput() =>
+            Assert.AreEqual(0, Program.Main(new[] {"1", "+", "2"}));
 
         [TestMethod]
         public void NotEnoughArgs()
@@ -98,7 +152,7 @@ namespace FSResultTests
                 Program.Main(new[] {"1"});
                 Assert.Fail();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Assert.AreEqual(Program.NotEnoughArgs, e);
             }
@@ -147,7 +201,7 @@ namespace FSResultTests
         {
             try
             {
-                Program.Main(new []{"1", "/", "0"});
+                Program.Main(new[] {"1", "/", "0"});
                 Assert.Fail();
             }
             catch (Exception e)

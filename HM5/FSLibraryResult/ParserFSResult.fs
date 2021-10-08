@@ -2,23 +2,23 @@ namespace FSLibraryResult
 
 open System
 
-module ParserFs =
-    let WrongOperation = "Wrong operation"
+type ParserFs<'T when 'T : (static member TryParse : string * outref<'T> -> bool)> = class
+        member b.WrongOperation = "Wrong operation"
 
-    let ParseCalculatorOperation arg =
-        match arg with
-        | "+" -> Ok CalculatorFs.Operation.Plus
-        | "-" -> Ok CalculatorFs.Operation.Minus
-        | "*" -> Ok CalculatorFs.Operation.Multiply
-        | "/" -> Ok CalculatorFs.Operation.Divide
-        | _ -> Error WrongOperation
+        member b.ParseCalculatorOperation arg =
+            match arg with
+            | "+" -> Ok CalculatorFs.Operation.Plus
+            | "-" -> Ok CalculatorFs.Operation.Minus
+            | "*" -> Ok CalculatorFs.Operation.Multiply
+            | "/" -> Ok CalculatorFs.Operation.Divide
+            | _ -> Error b.WrongOperation
 
-    let numberError = "value is not int"
+        member b.numberError = "value is not int"
 
-    let ParseNumber (str: string) =
-        let result = ref 0
-
-        if Int32.TryParse(str, result) then
-            Ok(!result)
-        else
-            Error numberError
+        member inline b.ParseNumber (str:string) (result : outref< Result<'T, string > >) =
+            let res = ref (new 'T())
+            if T.TryParse(str, res) then
+                result = Ok(!res)
+            else
+                result = Error b.numberError
+end

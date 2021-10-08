@@ -9,7 +9,7 @@ module CalculatorFs =
         | Divide
         | Multiply
 
-    let Calculate (val1: int) (val2: int) operation =
+    let inline Calculate (val1: ^T when ^T : (static member (+) : ^T * ^T -> ^T)) (val2: ^T) operation =
         match operation with
         | Plus -> Ok(val1 + val2)
         | Minus -> Ok(val1 - val2)
