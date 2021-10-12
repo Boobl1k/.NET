@@ -13,24 +13,38 @@ module ParserFs =
         | "/" -> Ok CalculatorFs.Operation.Divide
         | _ -> Error WrongOperation
 
-    let numberError = "value is not int"
+    let numberErrorMessage = "value is not int"
+    let resultNumber = ResultBuilder(numberErrorMessage)
 
-    let ParseNumber str (tryParse : string*byref<'T> -> bool) : Result<'T, string> =
-        ResultBuilder(numberError){
-            let mutable parsed = new 'T()
-            if tryParse(str,&parsed) then
-                return parsed
+    //надо эти 4 метода собрать в 1, вызывать в них T.TryParse. хз как это делать
+    let ParseInt (str: string) =
+        resultNumber {
+            let res = ref (Int32())
+
+            if Int32.TryParse(str, res) = true then
+                return !res
         }
-        
-    let ParseInt str =
-        ParseNumber str Int32.TryParse
-    
-    let ParseDouble str =
-        ParseNumber str Double.TryParse
-    
-    let ParseDecimal str =
-        ParseNumber str Decimal.TryParse
-        
-    let ParseFloat str =
-        ParseNumber str Single.TryParse
-        
+
+    let ParseDouble (str: string) =
+        resultNumber {
+            let res = ref (Double())
+
+            if Double.TryParse(str, res) = true then
+                return !res
+        }
+
+    let ParseFloat (str: string) =
+        resultNumber {
+            let res = ref (Single())
+
+            if Single.TryParse(str, res) = true then
+                return !res
+        }
+
+    let ParseDecimal (str: string) =
+        resultNumber {
+            let res = ref (Decimal())
+
+            if Decimal.TryParse(str, res) = true then
+                return !res
+        }

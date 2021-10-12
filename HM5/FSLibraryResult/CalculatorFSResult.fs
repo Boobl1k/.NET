@@ -26,8 +26,7 @@ module CalculatorFs =
             defaultResult{
                 let! val11 = val1
                 let! val22 = val2
-                let t = val11 + val22
-                return t
+                return val11 + val22
                 }
         | Divide ->
             ResultBuilder(DevByZero){
