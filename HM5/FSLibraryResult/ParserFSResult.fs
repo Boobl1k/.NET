@@ -15,20 +15,22 @@ module ParserFs =
 
     let numberError = "value is not int"
 
-    let ParseNumber str parser =
-        try
-            Ok (parser str)
-        with
-        | _ -> Error numberError
+    let ParseNumber str (tryParse : string*byref<'T> -> bool) : Result<'T, string> =
+        ResultBuilder(numberError){
+            let mutable parsed = new 'T()
+            if tryParse(str,&parsed) then
+                return parsed
+        }
         
     let ParseInt str =
-        ParseNumber str Int32.Parse
+        ParseNumber str Int32.TryParse
     
     let ParseDouble str =
-        ParseNumber str Double.Parse
+        ParseNumber str Double.TryParse
     
     let ParseDecimal str =
-        ParseNumber str Decimal.Parse
+        ParseNumber str Decimal.TryParse
         
     let ParseFloat str =
-        ParseNumber str Single.Parse
+        ParseNumber str Single.TryParse
+        
