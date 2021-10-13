@@ -3,39 +3,39 @@ namespace FSLibraryResult
 open System
 
 module ParserFs =
-    let WrongOperation = "Wrong operation"
+    let wrongOperation = "Wrong operation"
 
-    let ParseCalculatorOperation arg =
+    let parseCalculatorOperation arg =
         match arg with
         | "+" -> Ok CalculatorFs.Operation.Plus
         | "-" -> Ok CalculatorFs.Operation.Minus
         | "*" -> Ok CalculatorFs.Operation.Multiply
         | "/" -> Ok CalculatorFs.Operation.Divide
-        | _ -> Error WrongOperation
+        | _ -> Error wrongOperation
 
     let numberErrorMessage = "value is not int"
-    let resultNumber = ResultBuilder(numberErrorMessage)
+    let private resultNumber = ResultBuilder(numberErrorMessage)
 
     //надо эти 4 метода собрать в 1, вызывать в них T.TryParse. хз как это делать
-    let ParseInt (str: string) =
+    let parseInt (str: string) =
         resultNumber {
             let success, result = Int32.TryParse str
             if success then return result
         }
 
-    let ParseDouble (str: string) =
+    let parseDouble (str: string) =
         resultNumber {
             let success, result = Double.TryParse str
             if success then return result
         }
 
-    let ParseFloat (str: string) =
+    let parseFloat (str: string) =
         resultNumber {
             let success, result = Single.TryParse str
             if success then return result
         }
 
-    let ParseDecimal (str: string) =
+    let parseDecimal (str: string) =
         resultNumber {
             let success, result = Decimal.TryParse str
             if success then return result

@@ -12,10 +12,10 @@ namespace FSResultTests
         [TestMethod]
         public void DivBy0()
         {
-            var res = CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(2), FSharpResult<int, string>.NewOk(0),
+            var res = CalculatorFs.calculate(FSharpResult<int, string>.NewOk(2), FSharpResult<int, string>.NewOk(0),
                 CalculatorFs.Operation.Divide);
             Assert.IsTrue(res.IsError);
-            Assert.AreEqual(CalculatorFs.DevByZero, res.ErrorValue);
+            Assert.AreEqual(CalculatorFs.devByZero, res.ErrorValue);
         }
 
         [TestMethod]
@@ -25,16 +25,16 @@ namespace FSResultTests
             for (var j = 1; j < 21; ++j)
             {
                 var plusRes =
-                    CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
+                    CalculatorFs.calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
                         CalculatorFs.Operation.Plus);
                 var minusRes =
-                    CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
+                    CalculatorFs.calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
                         CalculatorFs.Operation.Minus);
                 var multiplicationRes =
-                    CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
+                    CalculatorFs.calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
                         CalculatorFs.Operation.Multiply);
                 var divRes =
-                    CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
+                    CalculatorFs.calculate(FSharpResult<int, string>.NewOk(i), FSharpResult<int, string>.NewOk(j),
                         CalculatorFs.Operation.Divide);
 
                 Assert.IsTrue(plusRes.IsOk);
@@ -56,16 +56,16 @@ namespace FSResultTests
             for (var j = 1.5; j < 21; ++j)
             {
                 var plusRes =
-                    CalculatorFs.Calculate(FSharpResult<double, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<double, string>.NewOk(i),
                         FSharpResult<double, string>.NewOk(j), CalculatorFs.Operation.Plus);
                 var minusRes =
-                    CalculatorFs.Calculate(FSharpResult<double, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<double, string>.NewOk(i),
                         FSharpResult<double, string>.NewOk(j), CalculatorFs.Operation.Minus);
                 var multiplicationRes =
-                    CalculatorFs.Calculate(FSharpResult<double, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<double, string>.NewOk(i),
                         FSharpResult<double, string>.NewOk(j), CalculatorFs.Operation.Multiply);
                 var divRes =
-                    CalculatorFs.Calculate(FSharpResult<double, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<double, string>.NewOk(i),
                         FSharpResult<double, string>.NewOk(j), CalculatorFs.Operation.Divide);
 
                 Assert.IsTrue(plusRes.IsOk);
@@ -87,16 +87,16 @@ namespace FSResultTests
             for (var j = 1.5m; j < 21; ++j)
             {
                 var plusRes =
-                    CalculatorFs.Calculate(FSharpResult<decimal, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<decimal, string>.NewOk(i),
                         FSharpResult<decimal, string>.NewOk(j), CalculatorFs.Operation.Plus);
                 var minusRes =
-                    CalculatorFs.Calculate(FSharpResult<decimal, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<decimal, string>.NewOk(i),
                         FSharpResult<decimal, string>.NewOk(j), CalculatorFs.Operation.Minus);
                 var multiplicationRes =
-                    CalculatorFs.Calculate(FSharpResult<decimal, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<decimal, string>.NewOk(i),
                         FSharpResult<decimal, string>.NewOk(j), CalculatorFs.Operation.Multiply);
                 var divRes =
-                    CalculatorFs.Calculate(FSharpResult<decimal, string>.NewOk(i),
+                    CalculatorFs.calculate(FSharpResult<decimal, string>.NewOk(i),
                         FSharpResult<decimal, string>.NewOk(j), CalculatorFs.Operation.Divide);
 
                 Assert.IsTrue(plusRes.IsOk);
@@ -118,15 +118,15 @@ namespace FSResultTests
         [TestMethod]
         public void WrongOperation()
         {
-            var res = ParserFs.ParseCalculatorOperation("ff");
+            var res = ParserFs.parseCalculatorOperation("ff");
             Assert.IsTrue(res.IsError);
-            Assert.AreEqual(ParserFs.WrongOperation, res.ErrorValue);
+            Assert.AreEqual(ParserFs.wrongOperation, res.ErrorValue);
         }
 
         [TestMethod]
         public void WrongNumber()
         {
-            var res = ParserFs.ParseInt("a");
+            var res = ParserFs.parseInt("a");
             Assert.IsTrue(res.IsError);
             Assert.AreEqual(ParserFs.numberErrorMessage, res.ErrorValue);
         }
@@ -134,16 +134,16 @@ namespace FSResultTests
         [TestMethod]
         public void AllTypes()
         {
-            var res1 = ParserFs.ParseInt("1");
+            var res1 = ParserFs.parseInt("1");
             Assert.IsTrue(res1.IsOk);
             Assert.AreEqual(1, res1.ResultValue);
-            var res2 = ParserFs.ParseDouble("1");
+            var res2 = ParserFs.parseDouble("1");
             Assert.IsTrue(res2.IsOk);
             Assert.AreEqual(1.0, res2.ResultValue);
-            var res3 = ParserFs.ParseDecimal("1");
+            var res3 = ParserFs.parseDecimal("1");
             Assert.IsTrue(res3.IsOk);
             Assert.AreEqual(1m, res3.ResultValue);
-            var res4 = ParserFs.ParseFloat("1");
+            var res4 = ParserFs.parseFloat("1");
             Assert.IsTrue(res4.IsOk);
             Assert.AreEqual(1.0f, res4.ResultValue);
         }
@@ -151,10 +151,10 @@ namespace FSResultTests
         [TestMethod]
         public void Parse()
         {
-            var resPlus = ParserFs.ParseCalculatorOperation("+");
-            var resMinus = ParserFs.ParseCalculatorOperation("-");
-            var resMultiplication = ParserFs.ParseCalculatorOperation("*");
-            var resDiv = ParserFs.ParseCalculatorOperation("/");
+            var resPlus = ParserFs.parseCalculatorOperation("+");
+            var resMinus = ParserFs.parseCalculatorOperation("-");
+            var resMultiplication = ParserFs.parseCalculatorOperation("*");
+            var resDiv = ParserFs.parseCalculatorOperation("/");
 
             Assert.IsTrue(resPlus.IsOk);
             Assert.IsTrue(resMinus.IsOk);
@@ -223,7 +223,7 @@ namespace FSResultTests
             }
             catch (Exception e)
             {
-                Assert.AreEqual(ParserFs.WrongOperation, e.Message);
+                Assert.AreEqual(ParserFs.wrongOperation, e.Message);
             }
         }
 
@@ -237,7 +237,7 @@ namespace FSResultTests
             }
             catch (Exception e)
             {
-                Assert.AreEqual(CalculatorFs.DevByZero, e.Message);
+                Assert.AreEqual(CalculatorFs.devByZero, e.Message);
             }
         }
     }

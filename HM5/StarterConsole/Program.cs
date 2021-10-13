@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using FSLibraryResult;
 using Microsoft.FSharp.Core;
 
@@ -13,9 +14,9 @@ namespace StarterConsole
             if (args.Length < 3)
                 throw NotEnoughArgs;
 
-            var num1Res = ParserFs.ParseInt(args[0]);
-            var num2Res = ParserFs.ParseInt(args[2]);
-            var operationRes = ParserFs.ParseCalculatorOperation(args[1]);
+            var num1Res = ParserFs.parseInt(args[0]);
+            var num2Res = ParserFs.parseInt(args[2]);
+            var operationRes = ParserFs.parseCalculatorOperation(args[1]);
 
             if (num1Res.IsError)
                 throw new Exception(num1Res.ErrorValue);
@@ -28,7 +29,7 @@ namespace StarterConsole
             var num2 = num2Res.ResultValue;
             var operation = operationRes.ResultValue;
 
-            var calculationRes = CalculatorFs.Calculate(FSharpResult<int, string>.NewOk(num1),
+            var calculationRes = CalculatorFs.calculate(FSharpResult<int, string>.NewOk(num1),
                 FSharpResult<int, string>.NewOk(num2), operation);
 
             if (calculationRes.IsError)
@@ -37,6 +38,7 @@ namespace StarterConsole
             var result = calculationRes.ResultValue;
 
             Console.WriteLine($"result is {result}");
+
             return 0;
         }
     }
