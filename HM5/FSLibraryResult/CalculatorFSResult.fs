@@ -1,6 +1,6 @@
 ﻿namespace FSLibraryResult
 
-type  ResultBuilder(errorMessage: string) =
+type ResultBuilder(errorMessage: string) =
     member b.Zero() = Error errorMessage
 
     member b.Bind(x, f) =
@@ -23,23 +23,22 @@ module CalculatorFs =
         | Multiply
 
     let inline calculate
-        (val1: Result<'T, string>
-                        when 'T: (static member (+) : 'T * 'T -> 'T)
-                        and 'T: (static member (-) : 'T * 'T -> 'T)
-                        and 'T: (static member (*) : 'T * 'T -> 'T)
-                        and 'T: (static member (/) : 'T * 'T -> 'T))
+        (val1: Result<'T, string> when 'T: (static member (+) : 'T * 'T -> 'T) and 'T: (static member (-) :
+                   'T * 'T -> 'T) and 'T: (static member (*) : 'T * 'T -> 'T) and 'T: (static member (/) : 'T * 'T -> 'T))
         (val2: Result<'T, string>)
-        (operation: Operation)
+        (operation: Result<Operation, string>)
         =
-        ResultBuilder(devByZero) {
-            let! val11 = val1
-            let! val22 = val2
-
-            match operation with
-            | Plus -> return val11 + val22
-            | Divide ->
-                if val22 <> new 'T() then
-                    return val11 / val22
-            | Minus -> return val11 - val22
-            | Multiply -> return val11 * val22
-        }
+        match operation with
+        | Ok operation ->
+            ResultBuilder(devByZero) {
+                let! val11 = val1
+                let! val22 = val2
+                match operation with
+                | Plus -> return val11 + val22
+                | Divide ->
+                    if val22 <> new 'T() then
+                        return val11 / val22
+                | Minus -> return val11 - val22
+                | Multiply -> return val11 * val22
+            }
+        | Error operationError -> Error operationError
