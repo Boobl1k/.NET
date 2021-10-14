@@ -25,12 +25,7 @@ namespace StarterConsole
             if (operationRes.IsError)
                 throw new Exception(operationRes.ErrorValue);
 
-            var num1 = num1Res.ResultValue;
-            var num2 = num2Res.ResultValue;
-            var operation = operationRes.ResultValue;
-
-            var calculationRes = CalculatorFs.calculate(FSharpResult<int, string>.NewOk(num1),
-                FSharpResult<int, string>.NewOk(num2), operation);
+            var calculationRes = CalculatorFs.calculate(num1Res, num2Res, operationRes);
 
             if (calculationRes.IsError)
                 throw new Exception(calculationRes.ErrorValue);

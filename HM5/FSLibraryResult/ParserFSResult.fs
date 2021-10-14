@@ -1,17 +1,20 @@
 namespace FSLibraryResult
 
 open System
+open FSLibraryResult.CalculatorFs
 
 module ParserFs =
     let wrongOperation = "Wrong operation"
 
     let parseCalculatorOperation arg =
-        match arg with
-        | "+" -> Ok CalculatorFs.Operation.Plus
-        | "-" -> Ok CalculatorFs.Operation.Minus
-        | "*" -> Ok CalculatorFs.Operation.Multiply
-        | "/" -> Ok CalculatorFs.Operation.Divide
-        | _ -> Error wrongOperation
+        ResultBuilder(wrongOperation) {
+            if arg = "+" || arg = "-" || arg = "*" || arg = "/" then
+                match arg with
+                | "+" -> return Operation.Plus
+                | "-" -> return Operation.Minus
+                | "*" -> return Operation.Multiply
+                | _ -> return Operation.Divide
+        }
 
     let numberErrorMessage = "value is not int"
     let private resultNumber = ResultBuilder(numberErrorMessage)
