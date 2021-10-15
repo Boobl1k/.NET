@@ -1,7 +1,6 @@
 namespace WebApplication
 
 open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
@@ -15,15 +14,15 @@ module Views =
     let layout (content: XmlNode list) =
         html [] [
             head [] [
-                title [] [ encodedText "Giraffe" ]
+                title [] [ encodedText "ЖЫРАФ" ]
                 link [ _rel "stylesheet"
                        _type "text/css"
-                       _href "/main.css" ]
+                       _href "main.css" ]
             ]
             body [] content
         ]
 
-    let partial () = h1 [] [ encodedText "Giraffe" ]
+    let partial () = h1 [] [ encodedText "ЖЫРАФ" ]
 
     let index (model: Message) =
         [ partial ()
@@ -40,7 +39,7 @@ module Startup =
         htmlView view
     let webApp =
         choose [
-            route "/ping"   >=> text "pong"
+            route "/bod"   >=> text "bod bod bod"
             route "/" >=> indexHandler "world" ]
     
     type Startup() =
@@ -52,4 +51,6 @@ module Startup =
                             (env : IHostEnvironment)
                             (loggerFactory : ILoggerFactory) =
         // Add Giraffe to the ASP.NET Core pipeline
-                app.UseGiraffe webApp
+                app
+                    .UseStaticFiles()
+                    .UseGiraffe(webApp)
