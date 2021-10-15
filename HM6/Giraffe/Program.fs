@@ -14,10 +14,7 @@ open Giraffe
 // Models
 // ---------------------------------
 
-type Message =
-    {
-        Text : string
-    }
+type Message = { Text: string }
 
 // ---------------------------------
 // Views
@@ -29,97 +26,94 @@ module Views =
     let layout (content: XmlNode list) =
         html [] [
             head [] [
-                title []  [ encodedText "Giraffe" ]
-                link [ _rel  "stylesheet"
+                title [] [ encodedText "Giraffe" ]
+                link [ _rel "stylesheet"
                        _type "text/css"
                        _href "/main.css" ]
             ]
             body [] content
         ]
 
-    let partial () =
-        h1 [] [ encodedText "Giraffe" ]
+    let partial () = h1 [] [ encodedText "Giraffe" ]
 
-    let index (model : Message) =
-        [
-            partial()
-            p [] [ encodedText model.Text ]
-        ] |> layout
+    let index (model: Message) =
+        [ partial ()
+          p [] [ encodedText model.Text ] ]
+        |> layout
 
 // ---------------------------------
 // Web app
 // ---------------------------------
 
-let indexHandler (name : string) =
+let indexHandler (name: string) =
     let greetings = $"Hello {name}, from Giraffe!"
-    let model     = { Text = greetings }
-    let view      = Views.index model
+    let model = { Text = greetings }
+    let view = Views.index model
     htmlView view
 
 let webApp =
-    choose [
-        GET >=>
-            choose [
-                route "/" >=> indexHandler "world"
-                route "/bod" >=> text "bod bod bod"
-                routef "/hello/%s" indexHandler
-            ]
-        setStatusCode 404 >=> text "Not Found" ]
+    choose [ GET
+             >=> choose [ route "/" >=> indexHandler "world"
+                          route "/bod" >=> text "bod bod bod"
+                          routef "/hello/%s" indexHandler ]
+             setStatusCode 404 >=> text "Not Found" ]
 
 // ---------------------------------
 // Error handler
 // ---------------------------------
 
-let errorHandler (ex : Exception) (logger : ILogger) =
+let errorHandler (ex: Exception) (logger: ILogger) =
     logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
+
+    clearResponse
+    >=> setStatusCode 500
+    >=> text ex.Message
 
 // ---------------------------------
 // Config and Main
 // ---------------------------------
 
-let configureCors (builder : CorsPolicyBuilder) =
+let configureCors (builder: CorsPolicyBuilder) =
     builder
-        .WithOrigins(
-            "http://localhost:5000",
-            "https://localhost:5001")
-       .AllowAnyMethod()
-       .AllowAnyHeader()
-       |> ignore
+        .WithOrigins("http://localhost:5000", "https://localhost:5001")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+    |> ignore
 
-let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IWebHostEnvironment>()
+let configureApp (app: IApplicationBuilder) =
+    let env =
+        app.ApplicationServices.GetService<IWebHostEnvironment>()
+
     (match env.IsDevelopment() with
-    | true  ->
-        app.UseDeveloperExceptionPage()
-    | false ->
-        app .UseGiraffeErrorHandler(errorHandler))
+     | true -> app.UseDeveloperExceptionPage()
+     | false -> app.UseGiraffeErrorHandler(errorHandler))
         .UseCors(configureCors)
         .UseStaticFiles()
         .UseGiraffe(webApp)
 
-let configureServices (services : IServiceCollection) =
-    services.AddCors()    |> ignore
+let configureServices (services: IServiceCollection) =
+    services.AddCors() |> ignore
     services.AddGiraffe() |> ignore
 
-let configureLogging (builder : ILoggingBuilder) =
-    builder.AddConsole()
-           .AddDebug() |> ignore
+let configureLogging (builder: ILoggingBuilder) =
+    builder.AddConsole().AddDebug() |> ignore
 
 [<EntryPoint>]
 let main args =
     let contentRoot = Directory.GetCurrentDirectory()
-    let webRoot     = Path.Combine(contentRoot, "WebRoot")
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(
-            fun webHostBuilder ->
-                webHostBuilder
-                    .UseContentRoot(contentRoot)
-                    .UseWebRoot(webRoot)
-                    .Configure(Action<IApplicationBuilder> configureApp)
-                    .ConfigureServices(configureServices)
-                    .ConfigureLogging(configureLogging)
-                    |> ignore)
+    let webRoot = Path.Combine(contentRoot, "WebRoot")
+
+    Host
+        .CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(fun webHostBuilder ->
+            webHostBuilder
+                .UseContentRoot(contentRoot)
+                .UseWebRoot(webRoot)
+                .Configure(Action<IApplicationBuilder> configureApp)
+                .ConfigureServices(configureServices)
+                .ConfigureLogging(configureLogging)
+            |> ignore)
         .Build()
         .Run()
+
     0
