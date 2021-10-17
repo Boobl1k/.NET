@@ -1,6 +1,7 @@
 ﻿namespace FSLibraryResult
 
 type ResultBuilder(errorMessage: string) =
+    new() = ResultBuilder("default error")
     member b.Zero() = Error errorMessage
 
     member b.Bind(x, f) =
