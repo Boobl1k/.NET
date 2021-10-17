@@ -5,6 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="CalculatorAdapter.fs" />
+        <Compile Include="Views.fs" />
+        <Compile Include="CalculatorHandler.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
         <Content Include="WebRoot\main.css" />
@@ -13,6 +16,10 @@
 
     <ItemGroup>
       <PackageReference Include="Giraffe" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\HM5\FSLibraryResult\FSLibraryResult.fsproj" />
     </ItemGroup>
 
 </Project>
