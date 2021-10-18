@@ -35,6 +35,12 @@ h1 {
     position: absolute;
     display: flex;
     justify-content: center;
+
+    -webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #minus .operationBack{
@@ -66,6 +72,7 @@ h1 {
 }
 
 input{
+    z-index: 1;
     margin: 5px 20px;
     margin-bottom: 30px;
     background-color: rgb(51,51,54);
