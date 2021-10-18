@@ -16,16 +16,9 @@ let indexHandler (name: string) =
     htmlView view
 
 let webApp =
-    let sum = "sum"
-    let mult = "mult"
-    let dif = "dif"
-    let div = "div"
     choose [ route "/bod" >=> text "bod bod bod"
              route "/" >=> indexHandler "world"
-             route $"/{sum}" >=> CalculatorHttpHandler sum
-             route $"/{mult}" >=> CalculatorHttpHandler mult
-             route $"/{dif}" >=> CalculatorHttpHandler dif
-             route $"/{div}" >=> CalculatorHttpHandler div]
+             route $"/calc" >=> CalculatorHttpHandler]
 
 type Startup() =
     member _.ConfigureServices(services: IServiceCollection) =
