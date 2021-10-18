@@ -1,9 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>жираф</title>
-</head>
-<body>
 
+<head>
+    <title>ЖЫРАФ</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+
+<body>
+    <h1>Calculator</h1>
+    <form method="GET" action="https://localhost:5001/calc">
+        <div id="inputContainer">
+            <input type="text" name="v1" placeholder="value 1" value="451">
+            <input type="text" name="v2" placeholder="value 2" value="567">
+        </div>
+        <div id="operationsContainer">
+            <div class="operation" id="plus">
+                <div class="operationBack">
+                    +
+                </div>
+                <button type="submit" name="op" value="sum"></button>
+            </div>
+            <div class="operation" id="minus">
+                <div class="operationBack">
+                    -
+                </div>
+                <button type="submit" name="op" value="dif"></button>
+            </div>
+            <div class="operation" id="mult">
+                <div class="operationBack">
+                    *
+                </div>
+                <button type="submit" name="op" value="mult"></button>
+            </div>
+            <div class="operation" id="div">
+                <div class="operationBack">
+                    /
+                </div>
+                <button type="submit" name="op" value="div"></button>
+            </div>
+        </div>
+    </form>
 </body>
+
 </html>

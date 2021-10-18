@@ -16,9 +16,13 @@ let indexHandler (name: string) =
     htmlView view
 
 let webApp =
-    choose [ route "/bod" >=> text "bod bod bod"
-             route "/" >=> indexHandler "world"
-             route $"/calc" >=> CalculatorHttpHandler]
+    choose [
+        GET >=> choose [
+            route "/bod" >=> text "bod bod bod"
+            route "/" >=> htmlFile "WebRoot/pages/index.html"
+            route "/calc" >=> CalculatorHttpHandler
+            ]
+        ]
 
 type Startup() =
     member _.ConfigureServices(services: IServiceCollection) =

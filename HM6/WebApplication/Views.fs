@@ -3,6 +3,7 @@
 type Message = { Text: string }
 open Giraffe.ViewEngine
 
+
 let layout (content: XmlNode list) =
     html [] [
         head [] [
