@@ -3,10 +3,10 @@
 
 ссылки для теста калькулятора через WebApplication:
 
-https://localhost:5001/mult?v1=4&v2=3
+https://localhost:5001/calc?v1=4&v2=3&op=mult
 
-https://localhost:5001/div?v1=21&v2=5
+https://localhost:5001/calc?v1=21&v2=5&op=div
 
-https://localhost:5001/sum?v1=134&v2=654
+https://localhost:5001/calc?v1=134&v2=654&op=sum
 
-https://localhost:5001/dif?v1=345&v2=354
+https://localhost:5001/calc?v1=345&v2=354&op=dif
