@@ -7,6 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebApplication", "HM6\WebAp
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSLibraryResult", "HM5\FSLibraryResult\FSLibraryResult.fsproj", "{78ECACFC-DF94-45A9-A64C-0C4E4FEC4EAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "HM6\IntegrationTests\IntegrationTests.csproj", "{428A0509-82F5-4C7E-A937-296F56E2BBAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{78ECACFC-DF94-45A9-A64C-0C4E4FEC4EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78ECACFC-DF94-45A9-A64C-0C4E4FEC4EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78ECACFC-DF94-45A9-A64C-0C4E4FEC4EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{428A0509-82F5-4C7E-A937-296F56E2BBAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{428A0509-82F5-4C7E-A937-296F56E2BBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{428A0509-82F5-4C7E-A937-296F56E2BBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{428A0509-82F5-4C7E-A937-296F56E2BBAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

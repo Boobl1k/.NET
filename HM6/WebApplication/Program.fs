@@ -3,7 +3,6 @@ module WebApplication.Program
 open System.IO
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
-open Startup
 
 [<EntryPoint>]
 let main _ =

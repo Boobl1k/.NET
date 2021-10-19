@@ -1,4 +1,4 @@
-module WebApplication.Startup
+namespace WebApplication
 
 open Views
 open Microsoft.AspNetCore.Builder
@@ -9,21 +9,23 @@ open Giraffe
 open WebApplication
 open CalculatorHandler
 
-let indexHandler (name: string) =
-    let greetings = $"Hello {name}, from Giraffe!"
-    let model = { Text = greetings }
-    let view = Views.index model
-    htmlView view
+module private StartupUtil = 
+    let indexHandler (name: string) =
+        let greetings = $"Hello {name}, from Giraffe!"
+        let model = { Text = greetings }
+        let view = Views.index model
+        htmlView view
 
-let webApp =
-    choose [
-        GET >=> choose [
-            route "/bod" >=> text "bod bod bod"
-            route "/" >=> htmlFile "WebRoot/pages/index.html"
-            route "/calc" >=> CalculatorHttpHandler
+    let webApp =
+        choose [
+            GET >=> choose [
+                route "/bod" >=> text "bod bod bod"
+                route "/" >=> htmlFile "WebRoot/pages/index.html"
+                route "/calc" >=> CalculatorHttpHandler
+                ]
             ]
-        ]
-
+        
+open StartupUtil
 type Startup() =
     member _.ConfigureServices(services: IServiceCollection) =
         // Register default Giraffe dependencies
