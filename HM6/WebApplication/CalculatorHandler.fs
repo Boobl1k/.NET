@@ -19,6 +19,6 @@ let CalculatorHttpHandler : HttpHandler =
             let res = CalculatorAdapter.calculate v.V1 v.V2 v.Op
             match res with
             | Ok res -> (setStatusCode 200 >=> json res) next ctx
-            | Error err -> (setStatusCode 500 >=> json err) next ctx
+            | Error err -> (setStatusCode 450 >=> json err) next ctx
         | Error err ->
             (setStatusCode 400 >=> json err) next ctx

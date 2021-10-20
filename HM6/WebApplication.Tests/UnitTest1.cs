@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -34,7 +35,7 @@ namespace WebApplication.Tests
             {
                 throw new Exception($"cant parse, the number is {strNumber}");
             }
-            
+
             return parsed;
         }
 
@@ -79,6 +80,22 @@ namespace WebApplication.Tests
             CheckEquality(2m, await Div(4, 2));
             CheckEquality(4.590909090909091m, await Div(101, 22));
             CheckEquality(0.3494278537538376m, await Div(1252, 3583));
+        }
+
+        [TestMethod]
+        public async Task SomeFails()
+        {
+            var response = await client.GetAsync("http://localhost:5000/calc?v1=1");
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+
+            response = await client.GetAsync("http://localhost:5000/calc?v1=1&v2=2&op=qwe");
+            Assert.AreEqual((HttpStatusCode) 450, response.StatusCode);
+            Assert.AreEqual($"\"{FSLibraryResult.ParserFs.wrongOperation}\"",
+                await response.Content.ReadAsStringAsync());
+
+            response = await client.GetAsync("http://localhost:5000/calc?v1=1&v2=0&op=div");
+            Assert.AreEqual($"\"{FSLibraryResult.CalculatorFs.devByZero}\"",
+                await response.Content.ReadAsStringAsync());
         }
     }
 }
