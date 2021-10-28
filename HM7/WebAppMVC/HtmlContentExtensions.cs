@@ -1,8 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppMVC.Models;
 
 namespace WebAppMVC
@@ -14,19 +18,48 @@ namespace WebAppMVC
 
         private class FormContent : IHtmlContent
         {
-            private string _resultContent;
-            public FormContent(IModelForEditorForm model)
+            private Task<string> _resultContentTask;
+
+            public FormContent(IModelForEditorForm model) =>
+                _resultContentTask = Task.Run(() => CreateContent(model.GetType().GetProperties()));
+
+            private static string CreateContent(IEnumerable<PropertyInfo> fieldInfos)
             {
                 var rb = new StringBuilder();
-                rb.Append("<form method=\"POST\">");
                 
-                
-                
-                rb.Append("</form>");
+                foreach (var fieldInfo in fieldInfos
+                    /*.Where(x =>
+                    x.FieldType.IsAssignableTo(typeof(Enum)) || 
+                    x.FieldType.IsAssignableTo(typeof(IConvertible)) ||
+                    x.FieldType.IsAssignableTo(typeof(string)))*/)
+                {
+                    rb.Append("<div class=\"editor-field\">");
+
+                    var type = fieldInfo.PropertyType;
+                    var name = fieldInfo.Name;
+
+                    if (type.IsAssignableTo(typeof(Enum)))
+                    {
+                        rb.Append("<select class=\"form-group\">");
+                        rb.Append($"<option selected>{name}</option>");
+                        rb.Append(type.GetFields()
+                            .Where(m => m.Name != "__value")
+                            .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>"));
+                        rb.Append("</select>");
+                    }
+                    else if (type.IsAssignableTo(typeof(IConvertible)))
+                        rb.Append("<input class=\"text-box single-line\" type=\"number\">");
+                    else
+                        rb.Append("<input class=\"text-box single-line\" type=\"text\">");
+
+                    rb.Append("</div>");
+                }
+
+                return rb.ToString();
             }
 
-            public void WriteTo(TextWriter writer, HtmlEncoder encoder) =>
-                writer.WriteLine(_resultContent);
+            public async void WriteTo(TextWriter writer, HtmlEncoder encoder) =>
+                await writer.WriteLineAsync(await _resultContentTask);
         }
     }
 }
