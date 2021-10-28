@@ -27,11 +27,7 @@ namespace WebAppMVC
             {
                 var rb = new StringBuilder();
                 
-                foreach (var fieldInfo in fieldInfos
-                    /*.Where(x =>
-                    x.FieldType.IsAssignableTo(typeof(Enum)) || 
-                    x.FieldType.IsAssignableTo(typeof(IConvertible)) ||
-                    x.FieldType.IsAssignableTo(typeof(string)))*/)
+                foreach (var fieldInfo in fieldInfos)
                 {
                     rb.Append("<div class=\"editor-field\">");
 
@@ -47,7 +43,7 @@ namespace WebAppMVC
                             .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>"));
                         rb.Append("</select>");
                     }
-                    else if (type.IsAssignableTo(typeof(IConvertible)))
+                    else if (IsNumber(type))
                         rb.Append("<input class=\"text-box single-line\" type=\"number\">");
                     else
                         rb.Append("<input class=\"text-box single-line\" type=\"text\">");
@@ -56,6 +52,10 @@ namespace WebAppMVC
                 }
 
                 return rb.ToString();
+
+                //TODO добавить другие числа
+                bool IsNumber(Type type) => 
+                    type.IsAssignableTo(typeof(int)) || type.IsAssignableTo(typeof(int?));
             }
 
             public async void WriteTo(TextWriter writer, HtmlEncoder encoder) =>
