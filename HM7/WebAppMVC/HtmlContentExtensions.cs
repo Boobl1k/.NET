@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using WebAppMVC.Models;
 
@@ -16,10 +18,10 @@ namespace WebAppMVC
 
         private class FormContent : IHtmlContent
         {
-            private readonly string _resultContent;
+            private readonly Task<string> _resultContentTask;
 
             public FormContent(IModelForEditorForm model) =>
-                _resultContent = CreateContent(model.GetType().GetProperties());
+                _resultContentTask = Task.Run(() =>CreateContent(model.GetType().GetProperties()));
 
             private static string CreateContent(IEnumerable<PropertyInfo> propertyInfos) =>
                 propertyInfos
@@ -31,10 +33,13 @@ namespace WebAppMVC
                     .Aggregate(string.Concat);
 
             private static string CreateHeaderForProperty(PropertyInfo prop) =>
-                $"<div class=\"editor-label\"><label for=\"{prop.Name}\">{FromCamelCase(prop.Name)}</label></div>";
+                $"<div class=\"editor-label\"><label for=\"{prop.Name}\">" +
+                $"{((DisplayAttribute)prop.GetCustomAttribute(typeof(DisplayAttribute)))?.Name ?? FromCamelCase(prop.Name)}" +
+                $"</label></div>";
 
             private static string FromCamelCase(string str) =>
-                str.Aggregate(string.Empty, (current, t) => current + (char.IsUpper(t) ? $" {t}" : t.ToString()));
+                str.Skip(1).Aggregate(str[0].ToString(), 
+                    (current, t) => current + (char.IsUpper(t) ? $" {char.ToLower(t)}" : t));
 
             private static string CreateBodyForProperty(PropertyInfo prop) =>
                 prop.PropertyType.IsAssignableTo(typeof(Enum))
@@ -67,8 +72,8 @@ namespace WebAppMVC
 
             private static bool IsNumber(Type type) => numberTypesArray.Any(type.IsAssignableTo);
 
-            void IHtmlContent.WriteTo(TextWriter writer, HtmlEncoder encoder) =>
-                writer.WriteLine(_resultContent);
+            async void IHtmlContent.WriteTo(TextWriter writer, HtmlEncoder encoder) =>
+                writer.WriteLine(await _resultContentTask);
         }
     }
 }

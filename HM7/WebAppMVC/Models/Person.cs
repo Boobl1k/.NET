@@ -5,7 +5,6 @@ namespace WebAppMVC.Models
 {
     public class Person : IModelForEditorForm
     {
-        [Display(Name = "Имя"), StringLength(10)]
         public string FirstName { get; set; }
         [Display(Name = "Фамилия"), StringLength(10)]
         public string Surname { get; set; }
