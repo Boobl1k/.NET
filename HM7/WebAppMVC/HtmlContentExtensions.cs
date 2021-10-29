@@ -14,7 +14,7 @@ namespace WebAppMVC
     {
         public static IHtmlContent MyEditorForModel(this IHtmlHelper helper) =>
             new FormContent(helper.ViewData.Model! ?? helper.ViewData.ModelMetadata.ModelType
-                .GetConstructor(Type.EmptyTypes).Invoke(Array.Empty<object>()));
+                .GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>()));
 
         private class FormContent : IHtmlContent
         {
