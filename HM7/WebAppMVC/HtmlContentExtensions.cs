@@ -18,7 +18,7 @@ namespace WebAppMVC
 
         private class FormContent : IHtmlContent
         {
-            private Task<string> _resultContentTask;
+            private readonly Task<string> _resultContentTask;
 
             public FormContent(IModelForEditorForm model) =>
                 _resultContentTask = Task.Run(() => CreateContent(model.GetType().GetProperties()));
@@ -26,7 +26,7 @@ namespace WebAppMVC
             private static string CreateContent(IEnumerable<PropertyInfo> fieldInfos)
             {
                 var rb = new StringBuilder();
-                
+
                 foreach (var fieldInfo in fieldInfos)
                 {
                     rb.Append("<div class=\"editor-field\">");
@@ -38,9 +38,11 @@ namespace WebAppMVC
                     {
                         rb.Append("<select class=\"form-group\">");
                         rb.Append($"<option selected>{name}</option>");
-                        rb.Append(type.GetFields()
-                            .Where(m => m.Name != "__value")
-                            .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>"));
+                        rb.Append(type
+                            .GetFields()
+                            .Where(m => m.Name != "value__")
+                            .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>")
+                            .Aggregate(string.Concat));
                         rb.Append("</select>");
                     }
                     else if (IsNumber(type))
@@ -52,11 +54,24 @@ namespace WebAppMVC
                 }
 
                 return rb.ToString();
-
-                //TODO добавить другие числа
-                bool IsNumber(Type type) => 
-                    type.IsAssignableTo(typeof(int)) || type.IsAssignableTo(typeof(int?));
             }
+
+            private static readonly Type[] numberTypesArray =
+            {
+                typeof(int), typeof(int?),
+                typeof(uint), typeof(uint?),
+                typeof(short), typeof(short?),
+                typeof(ushort), typeof(ushort?),
+                typeof(long), typeof(long?),
+                typeof(ulong), typeof(ulong?),
+                typeof(nint), typeof(nint?),
+                typeof(byte), typeof(byte?),
+                typeof(float), typeof(float?),
+                typeof(double), typeof(double?),
+                typeof(decimal), typeof(decimal?)
+            };
+
+            private static bool IsNumber(Type type) => numberTypesArray.Any(type.IsAssignableTo);
 
             public async void WriteTo(TextWriter writer, HtmlEncoder encoder) =>
                 await writer.WriteLineAsync(await _resultContentTask);
