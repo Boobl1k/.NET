@@ -31,7 +31,10 @@ namespace WebAppMVC
                     .Aggregate(string.Concat);
 
             private static string CreateHeaderForProperty(PropertyInfo prop) =>
-                $"<div class=\"editor-label\"><label for=\"{prop.Name}\">{prop.Name}</label></div>";
+                $"<div class=\"editor-label\"><label for=\"{prop.Name}\">{FromCamelCase(prop.Name)}</label></div>";
+
+            private static string FromCamelCase(string str) =>
+                str.Aggregate(string.Empty, (current, t) => current + (char.IsUpper(t) ? $" {t}" : t.ToString()));
 
             private static string CreateBodyForProperty(PropertyInfo prop) =>
                 prop.PropertyType.IsAssignableTo(typeof(Enum))
