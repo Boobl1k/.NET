@@ -5,25 +5,25 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
-using WebAppMVC.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppMVC
 {
     public static class HtmlContentExtensions
     {
-        public static IHtmlContent MyEditorForModel(this IModelForEditorForm model) =>
-            new FormContent(model);
+        public static IHtmlContent MyEditorForModel(this IHtmlHelper helper) =>
+            new FormContent(helper.ViewData.Model! ?? helper.ViewData.ModelMetadata.ModelType
+                .GetConstructor(Type.EmptyTypes).Invoke(Array.Empty<object>()));
 
         private class FormContent : IHtmlContent
         {
             private readonly string _resultContent;
 
-            public FormContent(IModelForEditorForm model) =>
+            public FormContent(object model) =>
                 _resultContent = CreateContent(model.GetType().GetProperties(), model);
 
-            private static string CreateContent(IEnumerable<PropertyInfo> propertyInfos, IModelForEditorForm model) =>
+            private static string CreateContent(IEnumerable<PropertyInfo> propertyInfos, object model) =>
                 propertyInfos
                     .Select(x =>
                         CreateHeaderForProperty(x) +
@@ -41,7 +41,7 @@ namespace WebAppMVC
                 str.Skip(1).Aggregate(str[0].ToString(),
                     (current, t) => current + (char.IsUpper(t) ? $" {char.ToLower(t)}" : t));
 
-            private static string CreateBodyForProperty(PropertyInfo prop, IModelForEditorForm model) =>
+            private static string CreateBodyForProperty(PropertyInfo prop, object model) =>
                 CreateInput(prop) + CreateSpan(prop, model);
 
             private static string CreateInput(PropertyInfo prop) =>
@@ -58,7 +58,7 @@ namespace WebAppMVC
                         ? $"<input class=\"text-box single-line\" type=\"number\" name=\"{prop.Name}\">"
                         : $"<input class=\"text-box single-line\" type=\"text\" name=\"{prop.Name}\">";
 
-            private static string CreateSpan(PropertyInfo prop, IModelForEditorForm model)
+            private static string CreateSpan(PropertyInfo prop, object model)
             {
                 var res =
                     $"<span class=\"field-validation-error\" data-valmsg-for=\"{prop.Name}\" data-valmsg-replace=\"true\">";

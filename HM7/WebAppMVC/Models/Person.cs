@@ -3,7 +3,7 @@
 
 namespace WebAppMVC.Models
 {
-    public class Person : IModelForEditorForm
+    public class Person
     {
         //[Display(Name = "Имя")]
         [StringLength(10)]
