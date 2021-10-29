@@ -18,10 +18,10 @@ namespace WebAppMVC
 
         private class FormContent : IHtmlContent
         {
-            private readonly string _resultContentTask;
+            private readonly string _resultContent;
 
             public FormContent(IModelForEditorForm model) =>
-                _resultContentTask = CreateContent(model.GetType().GetProperties(), model);
+                _resultContent = CreateContent(model.GetType().GetProperties(), model);
 
             private static string CreateContent(IEnumerable<PropertyInfo> propertyInfos, IModelForEditorForm model) =>
                 propertyInfos
@@ -88,7 +88,7 @@ namespace WebAppMVC
             private static bool IsNumber(Type type) => numberTypesArray.Any(type.IsAssignableTo);
 
             void IHtmlContent.WriteTo(TextWriter writer, HtmlEncoder encoder) =>
-                writer.WriteLine(_resultContentTask);
+                writer.WriteLine(_resultContent);
         }
     }
 }
