@@ -23,37 +23,54 @@ namespace WebAppMVC
             public FormContent(IModelForEditorForm model) =>
                 _resultContentTask = Task.Run(() => CreateContent(model.GetType().GetProperties()));
 
-            private static string CreateContent(IEnumerable<PropertyInfo> fieldInfos)
+            private static string CreateContent(IEnumerable<PropertyInfo> propertyInfos)
             {
                 var rb = new StringBuilder();
 
-                foreach (var fieldInfo in fieldInfos)
+                foreach (var propertyInfo in propertyInfos)
                 {
                     rb.Append("<div class=\"editor-field\">");
 
-                    var type = fieldInfo.PropertyType;
-                    var name = fieldInfo.Name;
-
-                    if (type.IsAssignableTo(typeof(Enum)))
-                    {
-                        rb.Append("<select class=\"form-group\">");
-                        rb.Append($"<option selected>{name}</option>");
-                        rb.Append(type
-                            .GetFields()
-                            .Where(m => m.Name != "value__")
-                            .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>")
-                            .Aggregate(string.Concat));
-                        rb.Append("</select>");
-                    }
-                    else if (IsNumber(type))
-                        rb.Append("<input class=\"text-box single-line\" type=\"number\">");
-                    else
-                        rb.Append("<input class=\"text-box single-line\" type=\"text\">");
+                    rb.Append(CreateHeaderForProperty(propertyInfo));
+                    rb.Append(CreateBodyForProperty(propertyInfo));
 
                     rb.Append("</div>");
                 }
 
                 return rb.ToString();
+            }
+
+            private static string CreateHeaderForProperty(PropertyInfo prop)
+            {
+                var res = string.Empty;
+
+                res += "<div class=\"editor-label\">";
+                res += $"<label for=\"{prop.Name}\">{prop.Name}</label>";
+                res += "</div>";
+                
+                return res;
+            }
+            private static string CreateBodyForProperty(PropertyInfo prop)
+            {
+                var result = string.Empty;
+                
+                if (prop.PropertyType.IsAssignableTo(typeof(Enum)))
+                {
+                    result += "<select class=\"form-group\">";
+                    result += $"<option selected>{prop.Name}</option>";
+                    result += prop.PropertyType
+                        .GetFields()
+                        .Where(m => m.Name != "value__")
+                        .Select(field => $"<option value=\"{field.Name}\">{field.Name}</option>")
+                        .Aggregate(string.Concat);
+                    result += "</select>";
+                }
+                else if (IsNumber(prop.PropertyType))
+                    result += $"<input class=\"text-box single-line\" type=\"number\" name=\"{prop.Name}\">";
+                else
+                    result += $"<input class=\"text-box single-line\" type=\"text\" name=\"{prop.Name}\">";
+
+                return result;
             }
 
             private static readonly Type[] numberTypesArray =
