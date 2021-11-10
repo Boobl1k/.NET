@@ -5,4 +5,12 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Person\Person.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\HM5\FSLibraryResult\FSLibraryResult.fsproj" />
+    </ItemGroup>
+
 </Project>
