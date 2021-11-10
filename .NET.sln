@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppMVC", "HM7\WebAppMVC\WebAppMVC.csproj", "{3A1E7A9C-D378-484E-AC65-B575FA8FC92B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppMVC", "HM8\WebAppMVC\WebAppMVC.csproj", "{A24CE78C-046A-435D-9A23-0385FC0608D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,10 @@ Global
 		{040D5532-C8E2-42A7-86E0-D52400511BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{040D5532-C8E2-42A7-86E0-D52400511BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{040D5532-C8E2-42A7-86E0-D52400511BCA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A1E7A9C-D378-484E-AC65-B575FA8FC92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A1E7A9C-D378-484E-AC65-B575FA8FC92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A1E7A9C-D378-484E-AC65-B575FA8FC92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A1E7A9C-D378-484E-AC65-B575FA8FC92B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24CE78C-046A-435D-9A23-0385FC0608D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24CE78C-046A-435D-9A23-0385FC0608D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24CE78C-046A-435D-9A23-0385FC0608D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24CE78C-046A-435D-9A23-0385FC0608D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
