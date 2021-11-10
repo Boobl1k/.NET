@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppMVC", "HM8\WebAppMVC\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSLibraryResult", "HM5\FSLibraryResult\FSLibraryResult.fsproj", "{FCACB419-EE79-401E-8C8C-3FAF595E957E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "HM8\TestProject1\TestProject1.csproj", "{DFEA42A6-75EA-415D-8314-76E7280A72BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{FCACB419-EE79-401E-8C8C-3FAF595E957E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCACB419-EE79-401E-8C8C-3FAF595E957E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCACB419-EE79-401E-8C8C-3FAF595E957E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFEA42A6-75EA-415D-8314-76E7280A72BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFEA42A6-75EA-415D-8314-76E7280A72BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFEA42A6-75EA-415D-8314-76E7280A72BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFEA42A6-75EA-415D-8314-76E7280A72BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
