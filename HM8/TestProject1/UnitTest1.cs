@@ -26,6 +26,24 @@ namespace TestProject1
             });
             Assert.Equal(result, actual);
         }
+        
+        [Fact]
+        public void DivByZero()
+        {
+            try
+            {
+                _calculator.Calculate(new CalculatorArgs
+                {
+                    Val1 = 1.ToString(),
+                    Val2 = 0.ToString(),
+                    Op = "div"
+                });
+            }
+            catch (Exception e)
+            {
+                Assert.Equal(LegacyCalculatorAdapter.CalculationException, e);
+            }
+        }
     }
 
     public class IntegrationTest

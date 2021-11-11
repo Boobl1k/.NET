@@ -6,7 +6,7 @@ namespace WebAppMVC.Controllers
 {
     public class LegacyCalculatorAdapter : ICalculator
     {
-        public readonly Exception CalculationException = new("cant calculate");
+        public static readonly Exception CalculationException = new("cant calculate");
 
         /// <summary>
         /// операции вида: plus, minus, mult, div

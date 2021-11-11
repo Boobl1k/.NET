@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAppMVC.Models;
 
@@ -17,11 +19,14 @@ namespace WebAppMVC.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return Ok(e.Message);
+                return new ObjectResult(e.Message)
+                {
+                    StatusCode = 450
+                };
             }
         }
     }
-
+    
     public class CalculatorArgs
     {
         public string Val1 { get; set; }
