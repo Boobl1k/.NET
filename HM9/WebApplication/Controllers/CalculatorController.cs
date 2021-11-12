@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,12 @@ namespace WebApplication.Controllers
                 str.Select(c => c is ' ' ? '+' : c)
                     .Aggregate(string.Empty, (c1, c2) => string.Concat(c1, c2));
 
-            return Ok(await ExpressionNode.FromString(AddPluses(expressionString)).GetResultAsync());
+            Console.WriteLine();
+            var tree = ExpressionNode.FromString(AddPluses(expressionString));
+            Console.WriteLine($"полечено выражение: {tree}");
+            var result = await tree.GetResultAsync();
+            Console.WriteLine($"результат вычисления: {result}");
+            return Ok(result);
         }
     }
 }
