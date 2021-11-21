@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApplication.Models
@@ -14,38 +16,52 @@ namespace WebApplication.Models
 
     public class ExpressionNode
     {
-        public decimal? Result { get; private set; }
-        public ExpressionNode V1 { get; init; }
-        public ExpressionNode V2 { get; init; }
-        public Operation Operation { get; init; }
+        private decimal? Result { get; set; }
+        private ExpressionNode V1 { get; init; }
+        private ExpressionNode V2 { get; init; }
+        private Operation Operation { get; init; }
 
         #region parsing string
 
         public static ExpressionNode FromString(string str) =>
             decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
                 ? new ExpressionNode {Result = parsedResult}
-                : str[0] is '('
+                : TryFindPlusOrMinus(ref str, out var beforePlus)
                     ? new ExpressionNode
                     {
-                        V1 = FromString(TakeBrackets(ref str)),
+                        V1 = FromString(beforePlus),
                         Operation = ParseOperation(str[0]),
                         V2 = FromString(str[1..])
                     }
-                    : TryFindPlusOrMinus(ref str, out var beforePlus)
+                    : TryParseLastNumber(ref str, out var val1)
                         ? new ExpressionNode
                         {
-                            V1 = FromString(beforePlus),
-                            Operation = ParseOperation(str[0]),
-                            V2 = FromString(str[1..])
+                            V1 = FromString(str[..^1]),
+                            Operation = ParseOperation(str[^1]),
+                            V2 = new ExpressionNode {Result = val1}
                         }
-                        : TryParseLastNumber(ref str, out var val1)
-                            ? new ExpressionNode
-                            {
-                                V1 = new ExpressionNode {Result = val1},
-                                Operation = ParseOperation(str[^1]),
-                                V2 = FromString(str[..^1])
-                            }
+                        : str![0] is '('
+                            ? IsAllSingleBracketExpression(str)
+                                ? FromString(str[1..^1])
+                                : new ExpressionNode
+                                {
+                                    V1 = FromString(TakeBrackets(ref str)),
+                                    Operation = ParseOperation(str[0]),
+                                    V2 = FromString(str[1..])
+                                }
                             : throw new Exception("qwe");
+
+        private static bool IsAllSingleBracketExpression(string str)
+        {
+            if (str[0] is not '(' || str[^1] is not ')') return false;
+            var opened = str.Sum(c => c switch
+            {
+                '(' => 1,
+                ')' => -1,
+                _ => 0
+            });
+            return opened is 0;
+        }
 
         private static Operation ParseOperation(char c) => c switch
         {
@@ -77,6 +93,8 @@ namespace WebApplication.Models
 
         private static string TakeBrackets(ref string str)
         {
+            if (str[0] is not '(') throw new Exception("метод только для случаев, когда на первом символе '('");
+
             var opened = 0;
             int closingIndex;
             for (var i = 0;; ++i)
@@ -88,6 +106,8 @@ namespace WebApplication.Models
                     break;
                 }
 
+            if (closingIndex is default(int)) throw new Exception("несостыковочка по скобкам");
+
             var res = str[1..closingIndex];
             str = (closingIndex + 1) < str.Length ? str[(closingIndex + 1)..] : string.Empty;
             return res;
@@ -95,13 +115,35 @@ namespace WebApplication.Models
 
         private static bool TryFindPlusOrMinus(ref string str, out string result)
         {
+            var openedBrackets = 0;
+            var index = -1;
+            for (var i = 0; i < str.Length; ++i)
+                if (index is not -1) break;
+                else
+                    switch (str[i])
+                    {
+                        case '(':
+                            ++openedBrackets;
+                            continue;
+                        case ')':
+                            --openedBrackets;
+                            continue;
+                        case '-':
+                        case '+':
+                            if (openedBrackets is 0)
+                                index = i;
+                            break;
+                    }
+
+            /*
             var plusIndex = str.IndexOf('+');
             var minusIndex = str.IndexOf('-');
             var index = plusIndex is -1
                 ? minusIndex
                 : minusIndex is -1
                     ? plusIndex
-                    : Math.Min(plusIndex, minusIndex);
+                    : Math.Min(plusIndex, minusIndex);*/
+
             result = string.Empty;
             if (index is -1) return false;
             result = str[..index];
@@ -119,6 +161,7 @@ namespace WebApplication.Models
             var v1 = await v1Task;
             var v2 = await v2Task;
             Console.WriteLine($"{v1} {OperationToString(Operation)} {v2}");
+            await Task.Delay(1000);
             Result = Operation switch
             {
                 Operation.Plus => v1 + v2,
@@ -140,9 +183,7 @@ namespace WebApplication.Models
             _ => ' '
         };
 
-        public override string ToString()
-        {
-            return Result is null ? $"{V1} {OperationToString(Operation)} {V2}" : Result.ToString();
-        }
+        public override string ToString() =>
+            Result is null ? $"({V1} {OperationToString(Operation)} {V2})" : Result.ToString();
     }
 }

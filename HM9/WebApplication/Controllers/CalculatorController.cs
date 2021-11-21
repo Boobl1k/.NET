@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models;
@@ -17,12 +18,12 @@ namespace WebApplication.Controllers
         public async Task<IActionResult> Calculate(string expressionString)
         {
             string AddPluses(string str) =>
-                str.Select(c => c is ' ' ? '+' : c)
-                    .Aggregate(string.Empty, (c1, c2) => string.Concat(c1, c2));
+                str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c is ' ' ? '+' : c)).ToString();
 
             Console.WriteLine();
+            Console.WriteLine($"полечено выражение: {AddPluses(expressionString)}");
             var tree = ExpressionNode.FromString(AddPluses(expressionString));
-            Console.WriteLine($"полечено выражение: {tree}");
+            Console.WriteLine($"пребразовано в: {tree.ToString()[1..^1]}");
             var result = await tree.GetResultAsync();
             Console.WriteLine($"результат вычисления: {result}");
             return Ok(result);
