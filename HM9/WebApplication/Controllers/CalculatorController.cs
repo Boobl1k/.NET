@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models;
 
+// ReSharper disable StringLiteralTypo
+
 namespace WebApplication.Controllers
 {
     public class CalculatorController : Controller
@@ -20,12 +22,18 @@ namespace WebApplication.Controllers
             string AddPluses(string str) =>
                 str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c is ' ' ? '+' : c)).ToString();
 
+            expressionString = AddPluses(expressionString);
             Console.WriteLine();
-            Console.WriteLine($"полечено выражение: {AddPluses(expressionString)}");
-            var tree = ExpressionNode.FromString(AddPluses(expressionString));
-            Console.WriteLine($"пребразовано в: {tree.ToString()[1..^1]}");
+            Console.WriteLine($"полечено выражение:\n\t{expressionString}");
+            var tree = ExpressionNode.FromString(expressionString);
+            Console.WriteLine($"пребразовано в:\n\t{tree.ToString()[1..^1]}");
             var result = await tree.GetResultAsync();
-            Console.WriteLine($"результат вычисления: {result}");
+            Console.WriteLine($"результат вычисления:\n\t{result}");
+
+            Console.WriteLine();
+            var expression = ExpressionCalculator.FromString(expressionString);
+            var exAsFunc = expression.AsFunc();
+            Console.WriteLine($"результат через ExpressionCalculator:\n\t{exAsFunc()}");
             return Ok(result);
         }
     }
