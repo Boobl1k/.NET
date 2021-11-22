@@ -18,7 +18,7 @@ namespace WebApplication.Controllers
         /// <param name="expressionString"></param>
         /// <returns></returns>
         [HttpGet, Route("calc")]
-        public async Task<IActionResult> Calculate(string expressionString)
+        public IActionResult Calculate(string expressionString)
         {
             string AddPluses(string str) =>
                 str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c is ' ' ? '+' : c)).ToString();
@@ -26,8 +26,8 @@ namespace WebApplication.Controllers
             expressionString = AddPluses(expressionString);
             Console.WriteLine();
             Console.WriteLine($"полечено выражение:\n\t{expressionString}");
-            var tree = ExpressionNode.FromString(expressionString);
-            Console.WriteLine($"пребразовано в:\n\t{tree.ToString()[1..^1]}");
+            //var tree = ExpressionNode.FromString(expressionString);
+            //Console.WriteLine($"пребразовано в:\n\t{tree.ToString()[1..^1]}");
             //var result = await tree.GetResultAsync();
             //Console.WriteLine($"результат вычисления:\n\t{result}");
 

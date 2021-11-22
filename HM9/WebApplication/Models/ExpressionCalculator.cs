@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -40,10 +39,8 @@ namespace WebApplication.Models
                 _ => throw new Exception("композишь без операции")
             };
 
-        public static decimal ExecuteSlowly(BinaryExpression expression)
-        {
-            return SlowExecutor.Execute(expression);
-        }
+        public static decimal? ExecuteSlowly(BinaryExpression expression) => 
+            SlowExecutor.Execute(expression);
 
         private class SlowExecutor : ExpressionVisitor
         {
@@ -61,13 +58,13 @@ namespace WebApplication.Models
                             ? VisitBinary(rightBinary)
                             : node.Right));
                 Task.WaitAll(leftResult, rightResult);
-                var res = node.Method.Invoke(default,
+                var res = node.Method?.Invoke(default,
                     new[] {leftResult.Result.Value, rightResult.Result.Value});
                 return Expression.Constant(res);
             }
 
-            public static decimal Execute(BinaryExpression expression) => 
-                (decimal) ((ConstantExpression) new SlowExecutor().VisitBinary(expression)).Value;
+            public static decimal? Execute(BinaryExpression expression) => 
+                ((ConstantExpression) new SlowExecutor().VisitBinary(expression)).Value as decimal?;
         }
     }
 }
