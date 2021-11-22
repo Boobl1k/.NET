@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +28,14 @@ namespace WebApplication.Controllers
             Console.WriteLine($"полечено выражение:\n\t{expressionString}");
             var tree = ExpressionNode.FromString(expressionString);
             Console.WriteLine($"пребразовано в:\n\t{tree.ToString()[1..^1]}");
-            var result = await tree.GetResultAsync();
-            Console.WriteLine($"результат вычисления:\n\t{result}");
+            //var result = await tree.GetResultAsync();
+            //Console.WriteLine($"результат вычисления:\n\t{result}");
 
             Console.WriteLine();
             var expression = ExpressionCalculator.FromString(expressionString);
-            var exAsFunc = expression.AsFunc();
-            Console.WriteLine($"результат через ExpressionCalculator:\n\t{exAsFunc()}");
-            return Ok(result);
+            var res1 = ExpressionCalculator.ExecuteSlowly((BinaryExpression)expression);
+            Console.WriteLine($"результат через ExpressionCalculator:\n\t{res1}");
+            return Ok(res1);
         }
     }
 }
