@@ -65,28 +65,6 @@ namespace WebApplication.Models
             return res;
         }
 
-        public static bool TryFindLastPlus(ref string str, out string beforePlus)
-        {
-            var openedBrackets = 0;
-            var index = str.Length;
-            for (var i = str.Length - 1; i >= 0; --i)
-                if (str[i] is '(')
-                    ++openedBrackets;
-                else if (str[i] is ')')
-                    --openedBrackets;
-                else if (str[i] is '+' && openedBrackets is 0)
-                {
-                    index = i;
-                    break;
-                }
-
-            beforePlus = default;
-            if (index == str.Length) return false;
-            beforePlus = str[..index];
-            str = str[index..];
-            return true;
-        }
-
         public static bool TryFindMiddlePlus(ref string str, out string beforePlus)
         {
             var openedBrackets = 0;
