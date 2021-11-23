@@ -40,7 +40,7 @@ namespace WebApplication.Models
             };
 
         public static decimal? ExecuteSlowly(BinaryExpression expression) => 
-            SlowExecutor.Execute(expression);
+            ((ConstantExpression)new SlowExecutor().Visit(expression)).Value as decimal?;
 
         private class SlowExecutor : ExpressionVisitor
         {
@@ -62,9 +62,6 @@ namespace WebApplication.Models
                     new[] {leftResult.Result.Value, rightResult.Result.Value});
                 return Expression.Constant(res);
             }
-
-            public static decimal? Execute(BinaryExpression expression) => 
-                ((ConstantExpression) new SlowExecutor().VisitBinary(expression)).Value as decimal?;
         }
     }
 }
