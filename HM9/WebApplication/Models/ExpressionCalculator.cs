@@ -23,7 +23,7 @@ namespace WebApplication.Models
         public static Expression FromString(string str) =>
             decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
                 ? Expression.Constant(parsedResult)
-                : StringParsingHelper.TryFindLastPlusOrMinus(ref str, out var beforePlus)
+                : StringParsingHelper.TryFindMiddlePlus(ref str, out var beforePlus)
                     ? Compose(
                         FromString(beforePlus),
                         FromString(str[1..]),
@@ -53,7 +53,7 @@ namespace WebApplication.Models
             };
 
         public static decimal? ExecuteSlowly(BinaryExpression expression) =>
-            ((ConstantExpression) new SlowExecutor().Visit(expression)).Value as decimal?;
+            (new SlowExecutor().Visit(expression) as ConstantExpression)?.Value as decimal?;
 
         private class SlowExecutor : ExpressionVisitor
         {
@@ -71,6 +71,7 @@ namespace WebApplication.Models
                             ? VisitBinary(rightBinary)
                             : node.Right));
                 Task.WaitAll(leftResult, rightResult);
+                Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
                 var res = node.Method?.Invoke(default,
                     new[] {leftResult.Result.Value, rightResult.Result.Value});
                 return Expression.Constant(res);

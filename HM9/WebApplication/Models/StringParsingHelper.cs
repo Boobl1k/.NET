@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -64,7 +65,7 @@ namespace WebApplication.Models
             return res;
         }
 
-        public static bool TryFindLastPlusOrMinus(ref string str, out string beforePlus)
+        public static bool TryFindLastPlus(ref string str, out string beforePlus)
         {
             var openedBrackets = 0;
             var index = str.Length;
@@ -73,7 +74,7 @@ namespace WebApplication.Models
                     ++openedBrackets;
                 else if (str[i] is ')')
                     --openedBrackets;
-                else if (str[i] is '-' or '+' && openedBrackets is 0)
+                else if (str[i] is '+' && openedBrackets is 0)
                 {
                     index = i;
                     break;
@@ -83,6 +84,35 @@ namespace WebApplication.Models
             if (index == str.Length) return false;
             beforePlus = str[..index];
             str = str[index..];
+            return true;
+        }
+
+        public static bool TryFindMiddlePlus(ref string str, out string beforePlus)
+        {
+            var openedBrackets = 0;
+            var indexes = new List<int>();
+            for (var i = 0; i < str.Length; ++i)
+                switch (str[i])
+                {
+                    case '(':
+                        ++openedBrackets;
+                        break;
+                    case ')':
+                        --openedBrackets;
+                        break;
+                    case '+':
+                    {
+                        if (openedBrackets is 0)
+                            indexes.Add(i);
+                        break;
+                    }
+                }
+
+            beforePlus = default;
+            if (indexes.Count is 0) return false;
+            var middleIndex = indexes[indexes.Count / 2];
+            beforePlus = str[..middleIndex];
+            str = str[middleIndex..];
             return true;
         }
     }

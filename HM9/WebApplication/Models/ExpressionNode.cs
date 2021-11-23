@@ -14,7 +14,7 @@ namespace WebApplication.Models
         public static ExpressionNode FromString(string str) =>
             decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
                 ? new ExpressionNode {Result = parsedResult}
-                : StringParsingHelper.TryFindLastPlusOrMinus(ref str, out var beforePlus)
+                : StringParsingHelper.TryFindLastPlus(ref str, out var beforePlus)
                     ? new ExpressionNode
                     {
                         V1 = FromString(beforePlus),

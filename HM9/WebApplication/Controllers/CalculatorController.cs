@@ -20,13 +20,17 @@ namespace WebApplication.Controllers
         public IActionResult Calculate(string expressionString)
         {
             string AddPluses(string str) =>
-                str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c is ' ' ? '+' : c)).ToString();
+                str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
+                {
+                    ' ' => "+",
+                    '-' => "+-",
+                    _ => c.ToString()
+                })).ToString();
 
             expressionString = AddPluses(expressionString);
             Console.WriteLine();
             Console.WriteLine($"полечено выражение:\n\t{expressionString}");
 
-            Console.WriteLine();
             var expression = ExpressionCalculator.FromString(expressionString);
             var res1 = ExpressionCalculator.ExecuteSlowly((BinaryExpression)expression);
             Console.WriteLine($"результат через ExpressionCalculator:\n\t{res1}");
