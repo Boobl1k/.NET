@@ -15,23 +15,19 @@ namespace WebApplication.Models
             _ => default
         };
 
-        public static bool IsAllSingleBracketExpression(string str)
-        {
-            if (str[0] is not '(' || str[^1] is not ')') return false;
-            var opened = str.Sum(c => c switch
+        public static bool IsAllSingleBracketExpression(string str) =>
+            str[0] is '(' && str[^1] is ')' &&
+            str.Sum(c => c switch
             {
                 '(' => 1,
                 ')' => -1,
                 _ => 0
-            });
-            return opened is 0;
-        }
-
-        private static bool IsNumber(char c) =>
-            c is '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9' or '.';
+            }) is 0;
 
         public static bool TryParseLastNumber(ref string str, out decimal result)
         {
+            bool IsNumber(char c) => c is '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9' or '.';
+
             var start = 0;
             for (var i = str.Length - 1; i >= 0; --i)
                 if (!IsNumber(str[i]))
@@ -68,31 +64,24 @@ namespace WebApplication.Models
             return res;
         }
 
-        public static bool TryFindPlusOrMinus(ref string str, out string result)
+        public static bool TryFindLastPlusOrMinus(ref string str, out string beforePlus)
         {
             var openedBrackets = 0;
-            var index = -1;
-            for (var i = 0; i < str.Length; ++i)
-                if (index is not -1) break;
-                else
-                    switch (str[i])
-                    {
-                        case '(':
-                            ++openedBrackets;
-                            continue;
-                        case ')':
-                            --openedBrackets;
-                            continue;
-                        case '-':
-                        case '+':
-                            if (openedBrackets is 0)
-                                index = i;
-                            break;
-                    }
+            var index = str.Length;
+            for (var i = str.Length - 1; i >= 0; --i)
+                if (str[i] is '(')
+                    ++openedBrackets;
+                else if (str[i] is ')')
+                    --openedBrackets;
+                else if (str[i] is '-' or '+' && openedBrackets is 0)
+                {
+                    index = i;
+                    break;
+                }
 
-            result = string.Empty;
-            if (index is -1) return false;
-            result = str[..index];
+            beforePlus = default;
+            if (index == str.Length) return false;
+            beforePlus = str[..index];
             str = str[index..];
             return true;
         }

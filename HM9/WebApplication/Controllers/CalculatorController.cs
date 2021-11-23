@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models;
 
@@ -26,10 +25,6 @@ namespace WebApplication.Controllers
             expressionString = AddPluses(expressionString);
             Console.WriteLine();
             Console.WriteLine($"полечено выражение:\n\t{expressionString}");
-            //var tree = ExpressionNode.FromString(expressionString);
-            //Console.WriteLine($"пребразовано в:\n\t{tree.ToString()[1..^1]}");
-            //var result = await tree.GetResultAsync();
-            //Console.WriteLine($"результат вычисления:\n\t{result}");
 
             Console.WriteLine();
             var expression = ExpressionCalculator.FromString(expressionString);

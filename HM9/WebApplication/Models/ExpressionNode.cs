@@ -14,7 +14,7 @@ namespace WebApplication.Models
         public static ExpressionNode FromString(string str) =>
             decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
                 ? new ExpressionNode {Result = parsedResult}
-                : StringParsingHelper.TryFindPlusOrMinus(ref str, out var beforePlus)
+                : StringParsingHelper.TryFindLastPlusOrMinus(ref str, out var beforePlus)
                     ? new ExpressionNode
                     {
                         V1 = FromString(beforePlus),
@@ -48,16 +48,14 @@ namespace WebApplication.Models
             var v2 = await v2Task;
             Console.WriteLine($"{v1} {OperationToString(Operation)} {v2}");
             await Task.Delay(1000);
-            Result = Operation switch
+            return (decimal) (Result = Operation switch
             {
                 Operation.Plus => v1 + v2,
                 Operation.Minus => v1 - v2,
                 Operation.Mult => v1 * v2,
                 Operation.Div => v1 / v2,
                 _ => throw new ArgumentOutOfRangeException()
-            };
-
-            return (decimal) Result;
+            });
         }
 
         private static char OperationToString(Operation operation) => operation switch
