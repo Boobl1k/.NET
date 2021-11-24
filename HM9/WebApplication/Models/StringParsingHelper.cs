@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace WebApplication.Models
@@ -25,21 +24,26 @@ namespace WebApplication.Models
                 _ => 0
             }) is 0;
 
-        public static bool TryParseLastNumber(ref string str, out decimal result)
+        public static bool TryFindLastMultOrDiv(ref string str, out string beforeOperation)
         {
-            bool IsNumber(char c) => c is '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9' or '.';
-
-            var start = 0;
+            var openedBrackets = 0;
+            int index = default;
             for (var i = str.Length - 1; i >= 0; --i)
-                if (!IsNumber(str[i]))
-                {
-                    start = i + 1;
-                    break;
-                }
+                if (str[i] is '(')
+                    ++openedBrackets;
+                else if (str[i] is ')')
+                    --openedBrackets;
+                else if (str[i] is '*' or '/')
+                    if (openedBrackets is 0)
+                    {
+                        index = i;
+                        break;
+                    }
 
-            if (!decimal.TryParse(str[start..], NumberStyles.Any, CultureInfo.InvariantCulture, out result))
-                return false;
-            str = str[..start];
+            beforeOperation = default;
+            if (index is default(int)) return false;
+            beforeOperation = str[..index];
+            str = str[index..];
             return true;
         }
 

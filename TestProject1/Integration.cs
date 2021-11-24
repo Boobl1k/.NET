@@ -25,7 +25,7 @@ namespace TestProject1
 
         [Theory, InlineData("1+2+3+4+5", 3, 15), InlineData("2/2", 1, 1), InlineData("(2+1)/2", 2, 1.5)]
         [InlineData("(2+3)/12*7+8*9", 4, 74.916666666666666666666666667), InlineData("1-2+3", 2, 2)]
-        [InlineData("-(1+3)", 1, -4)]
+        [InlineData("-(1+3)", 1, -4), InlineData("-(-1)", 0, 1), InlineData("1/(2+3)", 2, 0.2)]
         public async Task TimeTest(string expression, int timeInSeconds, decimal answer)
         {
             var watch = new Stopwatch();

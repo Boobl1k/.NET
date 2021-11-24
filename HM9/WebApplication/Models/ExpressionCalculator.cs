@@ -28,11 +28,11 @@ namespace WebApplication.Models
                         FromString(beforePlus),
                         FromString(str[1..]),
                         StringParsingHelper.ParseOperation(str[0]))
-                    : StringParsingHelper.TryParseLastNumber(ref str, out var val1)
+                    : StringParsingHelper.TryFindLastMultOrDiv(ref str, out var beforeOperation)
                         ? Compose(
-                            FromString(str[..^1]),
-                            Expression.Constant(val1),
-                            StringParsingHelper.ParseOperation(str[^1]))
+                            FromString(beforeOperation),
+                            FromString(str[1..]),
+                            StringParsingHelper.ParseOperation(str[0]))
                         : str![0] is '('
                             ? StringParsingHelper.IsAllSingleBracketExpression(str)
                                 ? FromString(str[1..^1])
@@ -57,13 +57,8 @@ namespace WebApplication.Models
         private static UnaryExpression Negotiate(Expression e) =>
             Expression.MakeUnary(ExpressionType.Negate, e, default);
 
-        public static decimal? ExecuteSlowly(Expression expression)
-        {
-            Console.WriteLine(expression.GetType());
-            var res = new SlowExecutor().Visit(expression);
-            Console.WriteLine(res.GetType());
-            return (res as ConstantExpression)?.Value as decimal?;
-        }
+        public static decimal? ExecuteSlowly(Expression expression) =>
+            (new SlowExecutor().Visit(expression) as ConstantExpression)?.Value as decimal?;
 
         private class SlowExecutor : ExpressionVisitor
         {
@@ -89,8 +84,11 @@ namespace WebApplication.Models
 
             protected override Expression VisitUnary(UnaryExpression node)
             {
-                var nodeResult = (node.Operand is BinaryExpression binary ? VisitBinary(binary) : node.Operand) as ConstantExpression;
-                return Expression.Constant(node.Method.Invoke(default, new[] {nodeResult.Value}));
+                var nodeResult = (node.Operand is BinaryExpression binary
+                        ? VisitBinary(binary)
+                        : node.Operand)
+                    as ConstantExpression;
+                return Expression.Constant(node.Method?.Invoke(default, new[] {nodeResult?.Value}));
             }
         }
     }
