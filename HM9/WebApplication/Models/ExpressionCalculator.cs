@@ -40,7 +40,9 @@ namespace WebApplication.Models
                                     FromString(StringParsingHelper.TakeBrackets(ref str)),
                                     FromString(str[1..]),
                                     StringParsingHelper.ParseOperation(str[0]))
-                            : throw new Exception("qwe");
+                            : str[0] is '-' && StringParsingHelper.IsAllSingleBracketExpression(str[1..])
+                                ? Negotiate(FromString(str[2..^1]))
+                                : throw new Exception(str);
 
         private static BinaryExpression Compose(Expression e1, Expression e2, Operation operation) =>
             operation switch
@@ -52,8 +54,16 @@ namespace WebApplication.Models
                 _ => throw new Exception("композишь без операции")
             };
 
-        public static decimal? ExecuteSlowly(Expression expression) => 
-            (new SlowExecutor().Visit(expression) as ConstantExpression)?.Value as decimal?;
+        private static UnaryExpression Negotiate(Expression e) =>
+            Expression.MakeUnary(ExpressionType.Negate, e, default);
+
+        public static decimal? ExecuteSlowly(Expression expression)
+        {
+            Console.WriteLine(expression.GetType());
+            var res = new SlowExecutor().Visit(expression);
+            Console.WriteLine(res.GetType());
+            return (res as ConstantExpression)?.Value as decimal?;
+        }
 
         private class SlowExecutor : ExpressionVisitor
         {
@@ -75,6 +85,12 @@ namespace WebApplication.Models
                 var res = node.Method?.Invoke(default,
                     new[] {leftResult.Result.Value, rightResult.Result.Value});
                 return Expression.Constant(res);
+            }
+
+            protected override Expression VisitUnary(UnaryExpression node)
+            {
+                var nodeResult = (node.Operand is BinaryExpression binary ? VisitBinary(binary) : node.Operand) as ConstantExpression;
+                return Expression.Constant(node.Method.Invoke(default, new[] {nodeResult.Value}));
             }
         }
     }

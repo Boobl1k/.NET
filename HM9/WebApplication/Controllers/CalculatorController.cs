@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -33,8 +34,8 @@ namespace WebApplication.Controllers
 
             var expression = ExpressionCalculator.FromString(expressionString);
             var res1 = ExpressionCalculator.ExecuteSlowly(expression);
-            Console.WriteLine($"результат через ExpressionCalculator:\n\t{res1}");
-            return Ok(res1);
+            Console.WriteLine($"результат через ExpressionCalculator:\n\t{res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка"}");
+            return Ok(res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка");
         }
     }
 }
