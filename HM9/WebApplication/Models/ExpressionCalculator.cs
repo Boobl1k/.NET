@@ -52,7 +52,7 @@ namespace WebApplication.Models
                 _ => throw new Exception("композишь без операции")
             };
 
-        public static decimal? ExecuteSlowly(BinaryExpression expression) =>
+        public static decimal? ExecuteSlowly(Expression expression) => 
             (new SlowExecutor().Visit(expression) as ConstantExpression)?.Value as decimal?;
 
         private class SlowExecutor : ExpressionVisitor

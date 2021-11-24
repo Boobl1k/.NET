@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
                 str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
                 {
                     ' ' => "+",
-                    '-' => "+-",
+                    '-' => builder.Length is not 0 && !"()*/+-".Contains(builder[^1]) ? "+-" : "-",
                     _ => c.ToString()
                 })).ToString();
 
@@ -32,7 +32,7 @@ namespace WebApplication.Controllers
             Console.WriteLine($"полечено выражение:\n\t{expressionString}");
 
             var expression = ExpressionCalculator.FromString(expressionString);
-            var res1 = ExpressionCalculator.ExecuteSlowly((BinaryExpression)expression);
+            var res1 = ExpressionCalculator.ExecuteSlowly(expression);
             Console.WriteLine($"результат через ExpressionCalculator:\n\t{res1}");
             return Ok(res1);
         }
