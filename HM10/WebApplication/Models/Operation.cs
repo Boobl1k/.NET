@@ -1,10 +1,9 @@
-namespace WebApplication.Models
+namespace WebApplication.Models;
+
+internal enum Operation : byte
 {
-    internal enum Operation : byte
-    {
-        Plus,
-        Minus,
-        Mult,
-        Div
-    }
+    Plus,
+    Minus,
+    Mult,
+    Div
 }
