@@ -1,7 +1,9 @@
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
+using WebApplication.DB;
 
 // ReSharper disable CommentTypo
 
@@ -57,14 +59,18 @@ internal static class ExpressionCalculator
     private static UnaryExpression Negotiate(Expression e) =>
         Expression.MakeUnary(ExpressionType.Negate, e, default);
 
-    public static decimal? ExecuteSlowly(Expression expression) =>
-        (new SlowExecutor().Visit(expression) as ConstantExpression)?.Value as decimal?;
+    public static decimal? ExecuteSlowly(Expression expression, ExpressionsCache cacheContext) =>
+        (new SlowExecutor(cacheContext).Visit(expression) as ConstantExpression)?.Value as decimal?;
 
     private class SlowExecutor : ExpressionVisitor
     {
+        private readonly ExpressionsCache _cache;
+        public SlowExecutor(ExpressionsCache cache) => _cache = cache;
+
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            Task.Delay(1000).Wait();
+            var delay = Task.Delay(1000);//глянь на это
+
             var leftResult = Task.Run(
                 () => (ConstantExpression) (
                     node.Left is BinaryExpression leftBinary
@@ -75,12 +81,40 @@ internal static class ExpressionCalculator
                     node.Right is BinaryExpression rightBinary
                         ? VisitBinary(rightBinary)
                         : node.Right));
+            var operation = ParseOperation(node.Method);
+
+
             Task.WaitAll(leftResult, rightResult);
+
+            var expressionWithoutRes = new ComputedExpression
+            {
+                V1 = (decimal) leftResult.Result.Value!,
+                V2 = (decimal) rightResult.Result.Value!,
+                Op = operation
+            };
+
             Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
-            var res = node.Method?.Invoke(default,
-                new[] {leftResult.Result.Value, rightResult.Result.Value});
-            return Expression.Constant(res);
+            
+            var computed = _cache.GetOrSet(expressionWithoutRes, () =>
+            {
+                var res = node.Method?.Invoke(default,
+                    new[] {leftResult.Result.Value, rightResult.Result.Value});
+                delay.Wait();//нифига я умный да?
+                return (decimal) res!;
+            });
+
+            return Expression.Constant(computed.Res);
         }
+
+        private static Operation ParseOperation(MethodInfo methodInfo) =>
+            (decimal) methodInfo.Invoke(default, new object[] {1m, 2m})! switch
+            {
+                3m => Operation.Plus,
+                -1m => Operation.Minus,
+                0.5m => Operation.Div,
+                2m => Operation.Mult,
+                _ => throw new Exception("метод не соответствует ни одной операции")
+            };
 
         protected override Expression VisitUnary(UnaryExpression node)
         {

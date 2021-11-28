@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication.DB;
 using WebApplication.Models;
 
 // ReSharper disable StringLiteralTypo
@@ -15,10 +16,11 @@ public class CalculatorController : Controller
     /// <summary>
     /// пробел считает за '+', поэтому нельзя использовать пробелы
     /// </summary>
+    /// <param name="cache"></param>
     /// <param name="expressionString"></param>
     /// <returns></returns>
     [HttpGet, Route("calc")]
-    public IActionResult Calculate(string expressionString)
+    public IActionResult Calculate([FromServices] ExpressionsCache cache,string expressionString)
     {
         string AddPluses(string str) =>
             str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
@@ -33,7 +35,7 @@ public class CalculatorController : Controller
         Console.WriteLine($"полечено выражение:\n\t{expressionString}");
 
         var expression = ExpressionCalculator.FromString(expressionString);
-        var res1 = ExpressionCalculator.ExecuteSlowly(expression);
+        var res1 = ExpressionCalculator.ExecuteSlowly(expression, cache);
         Console.WriteLine(
             $"результат через ExpressionCalculator:\n\t{res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка"}");
         return Ok(res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка");
