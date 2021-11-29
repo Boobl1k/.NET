@@ -84,17 +84,14 @@ internal static class ExpressionCalculator
                         ? VisitBinary(rightBinary)
                         : node.Right));
             
-            var delay = Task.Delay(1000); //глянь на это
-
-            var operation = ParseOperation(node.Method);
-            
             Task.WaitAll(leftResult, rightResult);
+            var delay = Task.Delay(1000); //глянь на это
 
             var expressionWithoutRes = new ComputedExpression
             {
                 V1 = (decimal) leftResult.Result.Value!,
                 V2 = (decimal) rightResult.Result.Value!,
-                Op = operation
+                Op = ParseOperation(node.Method)
             };
 
             Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
