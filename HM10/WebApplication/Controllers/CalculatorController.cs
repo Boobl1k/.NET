@@ -45,6 +45,6 @@ public class CalculatorController : Controller
         stopwatch.Stop();
         Console.WriteLine(
             $"результат через ExpressionCalculator:\n\t{res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка"}");
-        return Ok((res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка") + $"заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
+        return Ok((res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка") + $" заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
     }
 }
