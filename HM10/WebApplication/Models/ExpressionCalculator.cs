@@ -59,8 +59,12 @@ internal static class ExpressionCalculator
     private static UnaryExpression Negotiate(Expression e) =>
         Expression.MakeUnary(ExpressionType.Negate, e, default);
 
-    public static decimal? ExecuteSlowly(Expression expression, ExpressionsCache cacheContext) =>
-        (new SlowExecutor(cacheContext).Visit(expression) as ConstantExpression)?.Value as decimal?;
+    public static decimal? ExecuteSlowly(Expression expression, ExpressionsCache cache)
+    {
+        var res = (new SlowExecutor(cache).Visit(expression) as ConstantExpression)?.Value as decimal?;
+        cache.SaveChanges();
+        return res;
+    }
 
     private class SlowExecutor : ExpressionVisitor
     {
@@ -69,8 +73,6 @@ internal static class ExpressionCalculator
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            var delay = Task.Delay(1000);//глянь на это
-
             var leftResult = Task.Run(
                 () => (ConstantExpression) (
                     node.Left is BinaryExpression leftBinary
@@ -81,9 +83,11 @@ internal static class ExpressionCalculator
                     node.Right is BinaryExpression rightBinary
                         ? VisitBinary(rightBinary)
                         : node.Right));
+            
+            var delay = Task.Delay(1000); //глянь на это
+
             var operation = ParseOperation(node.Method);
-
-
+            
             Task.WaitAll(leftResult, rightResult);
 
             var expressionWithoutRes = new ComputedExpression
@@ -94,12 +98,12 @@ internal static class ExpressionCalculator
             };
 
             Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
-            
+
             var computed = _cache.GetOrSet(expressionWithoutRes, () =>
             {
                 var res = node.Method?.Invoke(default,
                     new[] {leftResult.Result.Value, rightResult.Result.Value});
-                delay.Wait();//нифига я умный да?
+                delay.Wait(); //нифига я умный да?
                 return (decimal) res!;
             });
 

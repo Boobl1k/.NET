@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -22,6 +23,8 @@ public class CalculatorController : Controller
     [HttpGet, Route("calc")]
     public IActionResult Calculate([FromServices] ExpressionsCache cache,string expressionString)
     {
+        cache = new ExpressionsCache(new ComputedExpressionsContext());
+        
         string AddPluses(string str) =>
             str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
             {
@@ -35,9 +38,13 @@ public class CalculatorController : Controller
         Console.WriteLine($"полечено выражение:\n\t{expressionString}");
 
         var expression = ExpressionCalculator.FromString(expressionString);
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
         var res1 = ExpressionCalculator.ExecuteSlowly(expression, cache);
+        stopwatch.Stop();
         Console.WriteLine(
             $"результат через ExpressionCalculator:\n\t{res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка"}");
-        return Ok(res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка");
+        return Ok((res1?.ToString(CultureInfo.InvariantCulture) ?? "ошибка") + $"заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
     }
 }

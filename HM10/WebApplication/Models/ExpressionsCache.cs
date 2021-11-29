@@ -17,17 +17,25 @@ public class ExpressionsCache
     {
         try
         {
-            return _context.Items.First(expression =>
-                expression.V1 == expWithoutRes.V1 &&
-                expression.V2 == expWithoutRes.V2 &&
-                expression.Op == expWithoutRes.Op);
+            lock (_context)
+            {
+                return _context.Items.First(expression =>
+                    expression.V1 == expWithoutRes.V1 &&
+                    expression.V2 == expWithoutRes.V2 &&
+                    expression.Op == expWithoutRes.Op);
+            }
         }
         catch
         {
             expWithoutRes.Res = resultBuilder();
-            _context.Items.Add(expWithoutRes);
-            _context.SaveChanges();
+            lock (_context)
+            {
+                _context.Items.Add(expWithoutRes);
+            }
             return expWithoutRes;
         }
     }
+
+    public void SaveChanges() => 
+        _context.SaveChanges();
 }
