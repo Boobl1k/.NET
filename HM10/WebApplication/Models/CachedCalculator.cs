@@ -5,25 +5,17 @@ using System.Reflection;
 using System.Threading.Tasks;
 using WebApplication.DB;
 
-// ReSharper disable CommentTypo
-
 namespace WebApplication.Models;
 
-internal static class ExpressionCalculator
+internal class CachedCalculator : ICachedCalculator
 {
-    //сначала отсекаем случай, когда данная строка есть просто число
-    //дальше идем от самых неприоритетных операторов к приоритетным
-    //почему? потому что чем выше операция находится в дереве, тем позже она выполняется
-    //так мы ищем плюсы и минусы, находящиеся вне скобок (так как они самые лохи в общем)
-    //далее мы получили подзадачу, в которой есть скобки, которые мы потом разберем рекурсивно, и умножения с делениями
-    //то есть сейчас самые неприоритетные операции - умножение и деление
-    //если их выполнять слева направо, у нас будет всегда верный ответ
-    //так что тут мы разбираем их СПРАВА НАЛЕВО (помним про очередность выполнения операций в дереве)
-    //для этого пытаемся найти самый правый оператор (* или /)
-    //осталось разобрать только скобки, символы скобок удаляем и тупо запускаем для этого рекурсию, 
-    //не забыв проверить случай, когда все выражение - это одна большая скобка
-    public static Expression FromString(string str) =>
-        decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
+    private readonly ICalculator _calculator;
+
+    public CachedCalculator(ICalculator calculator) => _calculator = calculator;
+
+    public Expression FromString(string str)
+    {
+        return decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedResult)
             ? Expression.Constant(parsedResult)
             : StringParsingHelper.TryFindMiddlePlus(ref str, out var beforePlus)
                 ? Compose(
@@ -46,22 +38,23 @@ internal static class ExpressionCalculator
                             ? Negotiate(FromString(str[2..^1]))
                             : throw new Exception(str);
 
-    private static BinaryExpression Compose(Expression e1, Expression e2, Operation operation) =>
-        operation switch
-        {
-            Operation.Plus => Expression.MakeBinary(ExpressionType.Add, e1, e2),
-            Operation.Minus => Expression.MakeBinary(ExpressionType.Subtract, e1, e2),
-            Operation.Mult => Expression.MakeBinary(ExpressionType.Multiply, e1, e2),
-            Operation.Div => Expression.MakeBinary(ExpressionType.Divide, e1, e2),
-            _ => throw new Exception("композишь без операции")
-        };
-
-    private static UnaryExpression Negotiate(Expression e) =>
-        Expression.MakeUnary(ExpressionType.Negate, e, default);
-
-    public static decimal? ExecuteSlowly(Expression expression, ExpressionsCache cache)
+        static BinaryExpression Compose(Expression e1, Expression e2, Operation operation) =>
+            operation switch
+            {
+                Operation.Plus => Expression.MakeBinary(ExpressionType.Add, e1, e2),
+                Operation.Minus => Expression.MakeBinary(ExpressionType.Subtract, e1, e2),
+                Operation.Mult => Expression.MakeBinary(ExpressionType.Multiply, e1, e2),
+                Operation.Div => Expression.MakeBinary(ExpressionType.Divide, e1, e2),
+                _ => throw new Exception("композишь без операции")
+            };
+        
+        static UnaryExpression Negotiate(Expression e) =>
+            Expression.MakeUnary(ExpressionType.Negate, e, default);
+    }
+    
+    public decimal CalculateWithCache(Expression expression, ExpressionsCache cache)
     {
-        var res = (new SlowExecutor(cache).Visit(expression) as ConstantExpression)?.Value as decimal?;
+        var res = (decimal) (new SlowExecutor(cache, _calculator).Visit(expression) as ConstantExpression)!.Value!;
         cache.SaveChanges();
         return res;
     }
@@ -69,7 +62,13 @@ internal static class ExpressionCalculator
     private class SlowExecutor : ExpressionVisitor
     {
         private readonly ExpressionsCache _cache;
-        public SlowExecutor(ExpressionsCache cache) => _cache = cache;
+        private readonly ICalculator _calculator;
+
+        public SlowExecutor(ExpressionsCache cache, ICalculator calculator)
+        {
+            _cache = cache;
+            _calculator = calculator;
+        }
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
@@ -83,7 +82,7 @@ internal static class ExpressionCalculator
                     node.Right is BinaryExpression rightBinary
                         ? VisitBinary(rightBinary)
                         : node.Right));
-            
+
             Task.WaitAll(leftResult, rightResult);
             var delay = Task.Delay(1000); //глянь на это
 
@@ -98,10 +97,10 @@ internal static class ExpressionCalculator
 
             var computed = _cache.GetOrSet(expressionWithoutRes, () =>
             {
-                var res = node.Method?.Invoke(default,
-                    new[] {leftResult.Result.Value, rightResult.Result.Value});
+                var res = _calculator.Calculate(expressionWithoutRes.V1, expressionWithoutRes.V2,
+                    expressionWithoutRes.Op);
                 delay.Wait(); //нифига я умный да?
-                return (decimal) res!;
+                return res;
             });
 
             return Expression.Constant(computed.Res);

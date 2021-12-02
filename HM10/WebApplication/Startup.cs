@@ -19,6 +19,8 @@ public class Startup
     {
         services.AddScoped<IDbContext<ComputedExpression>, ComputedExpressionsContext>();
         services.AddScoped<ExpressionsCache>();
+        services.AddSingleton<ICalculator, Calculator>();
+        services.AddSingleton<ICachedCalculator, CachedCalculator>();
         services.AddControllersWithViews();
     }
 
