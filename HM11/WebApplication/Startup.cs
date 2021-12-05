@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using WebApplication.Controllers;
 using WebApplication.DB;
 using WebApplication.Models;
 
@@ -22,6 +24,7 @@ public class Startup
         services.AddSingleton<ICalculator, Calculator>();
         services.AddSingleton<ICachedCalculator, CachedCalculator>();
         services.AddControllersWithViews();
+        //services.AddSingleton<ILogger<CalculatorController>, ExceptionHandler>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>

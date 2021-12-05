@@ -2,8 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers;
@@ -13,6 +15,7 @@ public class CalculatorController : Controller
     // пробел считает за '+', поэтому нельзя использовать пробелы
     [HttpGet, Route("calc")]
     public IActionResult Calculate(
+        [FromServices] ILogger<CalculatorController> exceptionHandler,
         [FromServices] ExpressionsCache cache,
         [FromServices] ICachedCalculator calculator,
         string expressionString)
@@ -29,15 +32,33 @@ public class CalculatorController : Controller
         Console.WriteLine();
         Console.WriteLine($"полечено выражение:\n\t{expressionString}");
 
-        var expression = calculator.FromString(expressionString);
+        Expression expression;
+        try
+        {
+            expression = calculator.FromString(expressionString);
+        }
+        catch (Exception e)
+        {
+            exceptionHandler.Log(LogLevel.Error, new EventId(), 0, e, default!);
+            throw;
+        }
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
-        var res1 = calculator.CalculateWithCache(expression, cache);
+        decimal result;
+        try
+        {
+            result = calculator.CalculateWithCache(expression, cache);
+        }
+        catch (Exception e)
+        {
+            exceptionHandler.Log(LogLevel.Error, new EventId(), 0, e, default!);
+            throw;
+        }
         stopwatch.Stop();
         Console.WriteLine(
-            $"результат через ExpressionCalculator:\n\t{res1.ToString(CultureInfo.InvariantCulture)}");
-        return Ok(res1.ToString(CultureInfo.InvariantCulture) +
+            $"результат через ExpressionCalculator:\n\t{result.ToString(CultureInfo.InvariantCulture)}");
+        return Ok(result.ToString(CultureInfo.InvariantCulture) +
                   $" заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
     }
 }
