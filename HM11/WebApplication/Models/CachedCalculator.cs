@@ -54,12 +54,12 @@ internal class CachedCalculator : ICachedCalculator
     
     public decimal CalculateWithCache(Expression expression, ExpressionsCache cache)
     {
-        var res = (decimal) (new SlowExecutor(cache, _calculator).Visit(expression) as ConstantExpression)!.Value!;
+        var res = (decimal) (new SlowExecutor(cache, _calculator).StartVisiting(expression) as ConstantExpression)!.Value!;
         cache.SaveChanges();
         return res;
     }
 
-    private class SlowExecutor : ExpressionVisitor
+    private class SlowExecutor
     {
         private readonly ExpressionsCache _cache;
         private readonly ICalculator _calculator;
@@ -70,17 +70,20 @@ internal class CachedCalculator : ICachedCalculator
             _calculator = calculator;
         }
 
-        protected override Expression VisitBinary(BinaryExpression node)
+        public Expression StartVisiting(Expression expression) => 
+            Visit((dynamic) expression);
+
+        private Expression Visit(BinaryExpression node)
         {
             var leftResult = Task.Run(
                 () => (ConstantExpression) (
                     node.Left is BinaryExpression leftBinary
-                        ? VisitBinary(leftBinary)
+                        ? Visit(leftBinary)
                         : node.Left));
             var rightResult = Task.Run(
                 () => (ConstantExpression) (
                     node.Right is BinaryExpression rightBinary
-                        ? VisitBinary(rightBinary)
+                        ? Visit(rightBinary)
                         : node.Right));
 
             Task.WaitAll(leftResult, rightResult);
@@ -116,10 +119,10 @@ internal class CachedCalculator : ICachedCalculator
                 _ => throw new Exception("метод не соответствует ни одной операции")
             };
 
-        protected override Expression VisitUnary(UnaryExpression node)
+        private Expression Visit(UnaryExpression node)
         {
             var nodeResult = (node.Operand is BinaryExpression binary
-                    ? VisitBinary(binary)
+                    ? Visit(binary)
                     : node.Operand)
                 as ConstantExpression;
             return Expression.Constant(node.Method?.Invoke(default, new[] {nodeResult?.Value}));
