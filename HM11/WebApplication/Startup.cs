@@ -24,7 +24,7 @@ public class Startup
         services.AddSingleton<ICalculator, Calculator>();
         services.AddSingleton<ICachedCalculator, CachedCalculator>();
         services.AddControllersWithViews();
-        //services.AddSingleton<ILogger<CalculatorController>, ExceptionHandler>();
+        services.AddSingleton<ExceptionHandler>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>

@@ -4,11 +4,11 @@ using WebApplication.Controllers;
 
 namespace WebApplication;
 
-public class ExceptionHandler : ILogger<CalculatorController>
+public class ExceptionHandler
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<ExceptionHandler> _logger;
 
-    public ExceptionHandler(ILogger logger) =>
+    public ExceptionHandler(ILogger<ExceptionHandler> logger) =>
         _logger = logger;
 
     private void Handle(LogLevel logLevel, Exception exception) =>
@@ -20,11 +20,6 @@ public class ExceptionHandler : ILogger<CalculatorController>
     private void Handle(LogLevel logLevel, DivideByZeroException exception) =>
         _logger.Log(logLevel, $"не дели на 0 {exception.Message}");
 
-    public IDisposable BeginScope<TState>(TState state) => default;
-
-    public bool IsEnabled(LogLevel logLevel) => true;
-
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-        Func<TState, Exception, string> formatter) =>
+    public void DoHandle(LogLevel logLevel, Exception exception) => 
         Handle(logLevel, (dynamic) exception);
 }
