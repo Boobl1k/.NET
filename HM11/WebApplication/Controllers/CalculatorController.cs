@@ -15,7 +15,7 @@ public class CalculatorController : Controller
     // пробел считает за '+', поэтому нельзя использовать пробелы
     [HttpGet, Route("calc")]
     public IActionResult Calculate(
-        [FromServices] ILogger<CalculatorController> exceptionHandler,
+        [FromServices] ExceptionHandler exceptionHandler,
         [FromServices] ExpressionsCache cache,
         [FromServices] ICachedCalculator calculator,
         string expressionString)
@@ -39,8 +39,8 @@ public class CalculatorController : Controller
         }
         catch (Exception e)
         {
-            exceptionHandler.Log(LogLevel.Error, new EventId(), 0, e, default!);
-            throw;
+            exceptionHandler.DoHandle(LogLevel.Error, e);
+            return BadRequest();
         }
 
         var stopwatch = new Stopwatch();
@@ -52,8 +52,8 @@ public class CalculatorController : Controller
         }
         catch (Exception e)
         {
-            exceptionHandler.Log(LogLevel.Error, new EventId(), 0, e, default!);
-            throw;
+            exceptionHandler.DoHandle(LogLevel.Error, e);
+            return BadRequest();
         }
         stopwatch.Stop();
         Console.WriteLine(
