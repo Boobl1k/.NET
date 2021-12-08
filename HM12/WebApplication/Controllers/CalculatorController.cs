@@ -20,17 +20,7 @@ public class CalculatorController : Controller
         [FromServices] ICachedCalculator calculator,
         string expressionString)
     {
-        string AddPluses(string str) =>
-            str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
-            {
-                ' ' => "+",
-                '-' => builder.Length is not 0 && !"()*/+-".Contains(builder[^1]) ? "+-" : "-",
-                _ => c.ToString()
-            })).ToString();
-
-        expressionString = AddPluses(expressionString);
-        Console.WriteLine();
-        Console.WriteLine($"полечено выражение:\n\t{expressionString}");
+        expressionString = ExpressionStringFix.Fix(expressionString);
 
         Expression expression;
         try
@@ -43,8 +33,6 @@ public class CalculatorController : Controller
             return BadRequest();
         }
 
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
         decimal result;
         try
         {
@@ -55,10 +43,7 @@ public class CalculatorController : Controller
             exceptionHandler.DoHandle(LogLevel.Error, e);
             return BadRequest();
         }
-        stopwatch.Stop();
-        Console.WriteLine(
-            $"результат через ExpressionCalculator:\n\t{result.ToString(CultureInfo.InvariantCulture)}");
-        return Ok(result.ToString(CultureInfo.InvariantCulture) +
-                  $" заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
+
+        return Ok(result.ToString(CultureInfo.InvariantCulture));
     }
 }
