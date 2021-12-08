@@ -1,4 +1,4 @@
-﻿module WebApplication.Views
+﻿module WebApplicationFs.Views
 
 type Message = { Text: string }
 open Giraffe.ViewEngine

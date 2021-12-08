@@ -1,4 +1,4 @@
-﻿module WebApplication.CalculatorHandler
+﻿module WebApplicationFs.CalculatorHandler
 
 open Giraffe.Core
 open Giraffe
@@ -16,7 +16,7 @@ let CalculatorHttpHandler : HttpHandler =
         let values = ctx.TryBindQueryString<Values>()
         match values with
         | Ok v ->
-            let res = CalculatorAdapter.calculate v.V1 v.V2 v.Op
+            let res = Ok(0)//CalculatorAdapter.calculate v.V1 v.V2 v.Op
             match res with
             | Ok res -> (setStatusCode 200 >=> json res) next ctx
             | Error err -> (setStatusCode 450 >=> json err) next ctx

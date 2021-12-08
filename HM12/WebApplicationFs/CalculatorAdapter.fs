@@ -1,5 +1,5 @@
-﻿module WebApplication.CalculatorAdapter
-
+﻿module WebApplicationFs.CalculatorAdapter
+(*
 open FSLibraryResult
 
 let calculate val1 val2 operation =
@@ -14,3 +14,4 @@ let calculate val1 val2 operation =
         | _ -> ""
     let operation = ParserFs.parseCalculatorOperation operation
     CalculatorFs.calculate val1 val2 operation
+*)

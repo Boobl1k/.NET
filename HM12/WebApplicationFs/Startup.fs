@@ -1,4 +1,4 @@
-namespace WebApplication
+namespace WebApplicationFs
 
 open Views
 open Microsoft.AspNetCore.Builder
@@ -6,7 +6,6 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open WebApplication
 open CalculatorHandler
 
 module private StartupUtil = 

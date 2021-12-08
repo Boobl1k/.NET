@@ -24,7 +24,7 @@ namespace WebApplication.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("WebApplication.Models.ComputedExpression", b =>
+            modelBuilder.Entity("WebApplicationFs.Models.ComputedExpression", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

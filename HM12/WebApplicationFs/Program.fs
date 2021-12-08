@@ -1,4 +1,4 @@
-module WebApplication.Program
+module WebApplicationFs.Program
 
 open System.IO
 open Microsoft.AspNetCore.Hosting
