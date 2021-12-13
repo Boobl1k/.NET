@@ -13,7 +13,7 @@ public class ComputedExpressionsContext : DbContext, IDbContext<ComputedExpressi
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseLoggerFactory(_loggerFactory);
+        //optionsBuilder.UseLoggerFactory(_loggerFactory);
         optionsBuilder.UseSqlServer(ConnectionString);
     }
     

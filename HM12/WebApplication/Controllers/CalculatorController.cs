@@ -15,34 +15,15 @@ public class CalculatorController : Controller
     // пробел считает за '+', поэтому нельзя использовать пробелы
     [HttpGet, Route("calc")]
     public IActionResult Calculate(
-        [FromServices] ExceptionHandler exceptionHandler,
         [FromServices] ExpressionsCache cache,
         [FromServices] ICachedCalculator calculator,
         string expressionString)
     {
         expressionString = ExpressionStringFix.Fix(expressionString);
 
-        Expression expression;
-        try
-        {
-            expression = calculator.FromString(expressionString);
-        }
-        catch (Exception e)
-        {
-            exceptionHandler.DoHandle(LogLevel.Error, e);
-            return BadRequest();
-        }
+        var expression = calculator.FromString(expressionString);
 
-        decimal result;
-        try
-        {
-            result = calculator.CalculateWithCache(expression, cache);
-        }
-        catch (Exception e)
-        {
-            exceptionHandler.DoHandle(LogLevel.Error, e);
-            return BadRequest();
-        }
+        var result = calculator.CalculateWithCache(expression, cache);
 
         return Ok(result.ToString(CultureInfo.InvariantCulture));
     }
