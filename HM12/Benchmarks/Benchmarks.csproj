@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HM12\WebApplicationFs\WebApplicationFs.fsproj" />
-      <ProjectReference Include="..\HM12\WebApplication\WebApplication.csproj" />
+      <ProjectReference Include="..\WebApplicationFs\WebApplicationFs.fsproj" />
+      <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
     </ItemGroup>
 
 </Project>

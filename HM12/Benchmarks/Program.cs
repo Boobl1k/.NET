@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Running;
 using Microsoft.AspNetCore.Mvc.Testing;
 using WebApplication;
@@ -8,7 +7,8 @@ using WebApplication;
 
 BenchmarkRunner.Run<SimpleBenchmark>();
 
-[SimpleJob(RunStrategy.Throughput, targetCount: 10, id: "MonitoringJob")]
+[MaxColumn]
+[MinColumn]
 public class SimpleBenchmark
 {
     private readonly WebApplicationFactory<Startup> _csFac = new();

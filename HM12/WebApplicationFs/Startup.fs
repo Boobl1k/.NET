@@ -22,7 +22,7 @@ module private StartupUtil =
             GET >=> choose [
                 route "/bod" >=> text "bod bod bod"
                 route "/" >=> htmlFile "WebRoot/pages/index.html"
-                route "/calc" >=> CalculatorHttpHandler(CachedCalculator(Calculator()), ExpressionsCache(ComputedExpressionsContext()))
+                route "/calc" >=> CalculatorHttpHandler(CachedCalculator(Calculator()), ExpressionsCache())
                 ]
             ]
         
