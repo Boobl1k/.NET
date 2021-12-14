@@ -7,7 +7,7 @@ namespace WebApplication.Models;
 
 public class ExpressionsCache
 {
-    private readonly List<ComputedExpression> _context = new();
+    private static readonly List<ComputedExpression> cache = new();
 
     //public ExpressionsCache(IDbContext<ComputedExpression> context) =>
         //_context = context;
@@ -18,9 +18,9 @@ public class ExpressionsCache
     {
         try
         {
-            lock (_context)
+            lock (cache)
             {
-                return _context.First(expression =>
+                return cache.First(expression =>
                     expression.V1 == expWithoutRes.V1 &&
                     expression.V2 == expWithoutRes.V2 &&
                     expression.Op == expWithoutRes.Op);
@@ -29,9 +29,9 @@ public class ExpressionsCache
         catch
         {
             expWithoutRes.Res = resultBuilder();
-            lock (_context)
+            lock (cache)
             {
-                _context.Add(expWithoutRes);
+                cache.Add(expWithoutRes);
             }
             return expWithoutRes;
         }
