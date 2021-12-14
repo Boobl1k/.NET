@@ -19,6 +19,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddMiniProfiler();
+        
         services.AddScoped<IDbContext<ComputedExpression>, ComputedExpressionsContext>();
         services.AddScoped<ExpressionsCache>();
         services.AddSingleton<ICalculator, Calculator>();
@@ -33,6 +35,7 @@ public class Startup
             : app.UseExceptionHandler("/Home/Error").UseHsts()).UseHttpsRedirection().UseStaticFiles()
         .UseRouting()
         .UseAuthorization()
+        .UseMiniProfiler()
         .UseEndpoints(endpoints =>
             endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}"));
 }

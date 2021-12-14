@@ -25,6 +25,7 @@ public class CalculatorController : Controller
 
         var result = calculator.CalculateWithCache(expression, cache);
 
-        return Ok(result.ToString(CultureInfo.InvariantCulture));
+        ViewBag.CalculationResult = result.ToString(CultureInfo.InvariantCulture);
+        return View();
     }
 }
