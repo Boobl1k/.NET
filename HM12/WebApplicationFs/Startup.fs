@@ -7,6 +7,8 @@ open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
 open CalculatorHandler
+open WebApplication.DB
+open WebApplication.Models
 
 module private StartupUtil = 
     let indexHandler (name: string) =
@@ -20,7 +22,7 @@ module private StartupUtil =
             GET >=> choose [
                 route "/bod" >=> text "bod bod bod"
                 route "/" >=> htmlFile "WebRoot/pages/index.html"
-                route "/calc" >=> CalculatorHttpHandler
+                route "/calc" >=> CalculatorHttpHandler(CachedCalculator(Calculator()), ExpressionsCache())
                 ]
             ]
         

@@ -7,7 +7,7 @@ using WebApplication.DB;
 
 namespace WebApplication.Models;
 
-internal class CachedCalculator : ICachedCalculator
+public class CachedCalculator : ICachedCalculator
 {
     private readonly ICalculator _calculator;
 
@@ -87,7 +87,7 @@ internal class CachedCalculator : ICachedCalculator
                         : node.Right));
 
             Task.WaitAll(leftResult, rightResult);
-            var delay = Task.Delay(1000); //глянь на это
+            //var delay = Task.Delay(1000); //глянь на это
 
             var expressionWithoutRes = new ComputedExpression
             {
@@ -96,13 +96,13 @@ internal class CachedCalculator : ICachedCalculator
                 Op = ParseOperation(node.Method)
             };
 
-            Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
+            //Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
 
             var computed = _cache.GetOrSet(expressionWithoutRes, () =>
             {
                 var res = _calculator.Calculate(expressionWithoutRes.V1, expressionWithoutRes.V2,
                     expressionWithoutRes.Op);
-                delay.Wait(); //нифига я умный да?
+                //delay.Wait(); //нифига я умный да?
                 return res;
             });
 

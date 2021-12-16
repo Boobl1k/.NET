@@ -18,4 +18,8 @@
       <PackageReference Include="Giraffe" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
+    </ItemGroup>
+
 </Project>

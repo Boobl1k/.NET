@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "HM12\WebA
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebApplicationFs", "HM12\WebApplicationFs\WebApplicationFs.fsproj", "{59523A1D-EC6A-43DE-ABDD-FF4FAA084BB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "HM12\Benchmarks\Benchmarks.csproj", "{30D7D8D3-BA85-4FA8-B64D-6ACEDA746F42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{59523A1D-EC6A-43DE-ABDD-FF4FAA084BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59523A1D-EC6A-43DE-ABDD-FF4FAA084BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59523A1D-EC6A-43DE-ABDD-FF4FAA084BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D7D8D3-BA85-4FA8-B64D-6ACEDA746F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D7D8D3-BA85-4FA8-B64D-6ACEDA746F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D7D8D3-BA85-4FA8-B64D-6ACEDA746F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D7D8D3-BA85-4FA8-B64D-6ACEDA746F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,50 +15,17 @@ public class CalculatorController : Controller
     // пробел считает за '+', поэтому нельзя использовать пробелы
     [HttpGet, Route("calc")]
     public IActionResult Calculate(
-        [FromServices] ExceptionHandler exceptionHandler,
         [FromServices] ExpressionsCache cache,
         [FromServices] ICachedCalculator calculator,
         string expressionString)
     {
-        string AddPluses(string str) =>
-            str.Aggregate(new StringBuilder(), (builder, c) => builder.Append(c switch
-            {
-                ' ' => "+",
-                '-' => builder.Length is not 0 && !"()*/+-".Contains(builder[^1]) ? "+-" : "-",
-                _ => c.ToString()
-            })).ToString();
+        expressionString = ExpressionStringFix.Fix(expressionString);
 
-        expressionString = AddPluses(expressionString);
-        Console.WriteLine();
-        Console.WriteLine($"полечено выражение:\n\t{expressionString}");
+        var expression = calculator.FromString(expressionString);
 
-        Expression expression;
-        try
-        {
-            expression = calculator.FromString(expressionString);
-        }
-        catch (Exception e)
-        {
-            exceptionHandler.DoHandle(LogLevel.Error, e);
-            return BadRequest();
-        }
+        var result = calculator.CalculateWithCache(expression, cache);
 
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-        decimal result;
-        try
-        {
-            result = calculator.CalculateWithCache(expression, cache);
-        }
-        catch (Exception e)
-        {
-            exceptionHandler.DoHandle(LogLevel.Error, e);
-            return BadRequest();
-        }
-        stopwatch.Stop();
-        Console.WriteLine(
-            $"результат через ExpressionCalculator:\n\t{result.ToString(CultureInfo.InvariantCulture)}");
-        return Ok(result.ToString(CultureInfo.InvariantCulture) +
-                  $" заняло времени: {stopwatch.ElapsedMilliseconds} миллисекунд");
+        ViewBag.CalculationResult = result.ToString(CultureInfo.InvariantCulture);
+        return View();
     }
 }

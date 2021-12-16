@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApplication.DB;
 
-internal class ComputedExpressionsContext : DbContext, IDbContext<ComputedExpression>
+public class ComputedExpressionsContext : DbContext, IDbContext<ComputedExpression>
 {
     private const string Catalog = "expressionsCache";
     private const string ConnectionString = $"Data Source=localhost;Initial Catalog={Catalog};Integrated Security=True";
@@ -13,7 +13,7 @@ internal class ComputedExpressionsContext : DbContext, IDbContext<ComputedExpres
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseLoggerFactory(_loggerFactory);
+        //optionsBuilder.UseLoggerFactory(_loggerFactory);
         optionsBuilder.UseSqlServer(ConnectionString);
     }
     
