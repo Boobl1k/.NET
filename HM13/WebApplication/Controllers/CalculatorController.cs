@@ -1,11 +1,4 @@
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers;
@@ -25,7 +18,6 @@ public class CalculatorController : Controller
 
         var result = calculator.CalculateWithCache(expression, cache);
 
-        ViewBag.CalculationResult = result.ToString(CultureInfo.InvariantCulture);
-        return View();
+        return View(result);
     }
 }
