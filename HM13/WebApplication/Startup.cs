@@ -21,7 +21,6 @@ public class Startup
     {
         services.AddMiniProfiler();
         
-        services.AddScoped<IDbContext<ComputedExpression>, ComputedExpressionsContext>();
         services.AddScoped<ExpressionsCache>();
         services.AddSingleton<ICalculator, Calculator>();
         services.AddSingleton<ICachedCalculator, CachedCalculator>();

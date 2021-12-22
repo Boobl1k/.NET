@@ -52,12 +52,8 @@ public class CachedCalculator : ICachedCalculator
             Expression.MakeUnary(ExpressionType.Negate, e, default);
     }
     
-    public decimal CalculateWithCache(Expression expression, ExpressionsCache cache)
-    {
-        var res = (decimal) (new SlowExecutor(cache, _calculator).StartVisiting(expression) as ConstantExpression)!.Value!;
-        cache.SaveChanges();
-        return res;
-    }
+    public decimal CalculateWithCache(Expression expression, ExpressionsCache cache) => 
+        (decimal) (new SlowExecutor(cache, _calculator).StartVisiting(expression) as ConstantExpression)!.Value!;
 
     private class SlowExecutor
     {
@@ -87,7 +83,6 @@ public class CachedCalculator : ICachedCalculator
                         : node.Right));
 
             Task.WaitAll(leftResult, rightResult);
-            //var delay = Task.Delay(1000); //глянь на это
 
             var expressionWithoutRes = new ComputedExpression
             {
@@ -96,13 +91,10 @@ public class CachedCalculator : ICachedCalculator
                 Op = ParseOperation(node.Method)
             };
 
-            //Console.WriteLine($"{leftResult.Result} {node.Method} {rightResult.Result}");
-
             var computed = _cache.GetOrSet(expressionWithoutRes, () =>
             {
                 var res = _calculator.Calculate(expressionWithoutRes.V1, expressionWithoutRes.V2,
                     expressionWithoutRes.Op);
-                //delay.Wait(); //нифига я умный да?
                 return res;
             });
 

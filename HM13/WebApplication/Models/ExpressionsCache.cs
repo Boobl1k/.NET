@@ -10,7 +10,7 @@ public class ExpressionsCache
     private static readonly List<ComputedExpression> cache = new();
 
     //public ExpressionsCache(IDbContext<ComputedExpression> context) =>
-        //_context = context;
+    //_context = context;
 
     public ComputedExpression GetOrSet(
         ComputedExpression expWithoutRes,
@@ -20,6 +20,7 @@ public class ExpressionsCache
         {
             lock (cache)
             {
+                //TODO воняет слегка
                 return cache.First(expression =>
                     expression.V1 == expWithoutRes.V1 &&
                     expression.V2 == expWithoutRes.V2 &&
@@ -33,13 +34,8 @@ public class ExpressionsCache
             {
                 cache.Add(expWithoutRes);
             }
+
             return expWithoutRes;
         }
     }
-
-    public void SaveChanges()
-    {
-        
-    }
-        //_context.SaveChanges();
 }
