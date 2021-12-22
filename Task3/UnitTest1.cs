@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Text;
 using JetBrains.dotMemoryUnit;
+using JetBrains.dotMemoryUnit.Kernel;
 using Microsoft.AspNetCore.Mvc.Testing;
 using WebApplication;
 using Xunit;
@@ -19,7 +20,7 @@ public class UnitTest1
         DotMemoryUnitTestOutput.SetOutputMethod(_writer.WriteLine);
     }
 
-    [DotMemoryUnit(CollectAllocations = true)]
+    [DotMemoryUnit(CollectAllocations = true, FailIfRunWithoutSupport = false)]
     [Fact]
     public void Test1()
     {
