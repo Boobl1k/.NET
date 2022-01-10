@@ -5,15 +5,6 @@
     Layout = "_Layout";
 }
 
-@Html.DisplayFor(model => model.Character)
-@if (Model.Log is not null)
-{
-@foreach (var str in Model!.Log.Split('\n'))
-{
-    <p>@str</p>
-}
-}
-
 <form method="post" asp-controller="Home" asp-action="Fight" style="display: flex; flex-direction: column">
     name
     <input name="name" value="@Model.DamagedCharacter.Name"/>
@@ -35,3 +26,14 @@
     <input name="Ac" value="@Model.DamagedCharacter.Ac"/>
     <input type="submit" value="@Model.DamagedCharacter.Name"/>
 </form>
+----------------------------------------------
+@Html.DisplayFor(model => model.Character)
+----------------------------------------------
+@if (Model.Log is not null)
+{
+@foreach (var str in Model!.Log.Split('\n'))
+{
+    <p>@str</p>
+}
+}
+

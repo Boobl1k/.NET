@@ -18,6 +18,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Fight(Character player)
     {
+        if (player.Name is null)
+            player.Name = "default name";
         Console.WriteLine(player.Name);
         var q = await _client.GetAsync("https://localhost:7099/GetRandomMonster");
         var monster = await q.Content.ReadFromJsonAsync<Character>();
@@ -28,6 +30,11 @@ public class HomeController : Controller
         var e = await _client.PostAsync("https://localhost:7263/Fight",
             JsonContent.Create(new FightStartingModel(player, monster!)));
         var fightResult = await e.Content.ReadFromJsonAsync<FightResult>();
+        Console.WriteLine(fightResult is null);
+        Console.WriteLine(fightResult.player is null);
+        Console.WriteLine(fightResult.player.Name is null);
+        if(fightResult.player.Name is null)
+            fightResult.player.Name = String.Empty;
         return View(new FightModel(calculated!, fightResult!.Log, fightResult.player));
     }
 }

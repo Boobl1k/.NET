@@ -13,6 +13,8 @@ public class FightController
     [HttpPost]
     public IActionResult Fight(FightInput input)
     {
+        if (input.Player.Name is null)
+            input.Player.Name = string.Empty;
         var (player, monster) = input;
         return new JsonResult(FightsDealer.GetFightLog(player, monster));
     }
