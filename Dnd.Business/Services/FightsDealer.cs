@@ -1,11 +1,12 @@
 using System.Text;
+using Dnd.Business.Controllers;
 using Dnd.Business.Models;
 
 namespace Dnd.Business.Services;
 
 public static class FightsDealer
 {
-    public static string GetFightLog(Character player, Character monster)
+    public static FightController.FightResult GetFightLog(Character player, Character monster)
     {
         var stringBuilder = new StringBuilder();
         for (;;)
@@ -18,7 +19,7 @@ public static class FightsDealer
             Attack(monster, player, stringBuilder);
         }
 
-        return stringBuilder.ToString();
+        return new FightController.FightResult(stringBuilder.ToString(), player);
     }
 
     private static void Attack(Character character1, Character character2, StringBuilder stringBuilder)

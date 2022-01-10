@@ -9,11 +9,11 @@ namespace Dnd.Business.Controllers;
 public class FightController
 {
     public record FightInput(Character Player, Character Monster);
-    private record FightResult(string Log);
+    public record FightResult(string Log, Character player);
     [HttpPost]
     public IActionResult Fight(FightInput input)
     {
         var (player, monster) = input;
-        return new JsonResult(new FightResult(FightsDealer.GetFightLog(player, monster)));
+        return new JsonResult(FightsDealer.GetFightLog(player, monster));
     }
 }

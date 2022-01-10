@@ -6,10 +6,32 @@
 }
 
 @Html.DisplayFor(model => model.Character)
-
+@if (Model.Log is not null)
+{
 @foreach (var str in Model!.Log.Split('\n'))
 {
     <p>@str</p>
 }
+}
 
-
+<form method="post" asp-controller="Home" asp-action="Fight" style="display: flex; flex-direction: column">
+    name
+    <input name="name" value="@Model.DamagedCharacter.Name"/>
+    hitPoints
+    <input name="hitPoints" value="@Model.DamagedCharacter.HitPoints"/>
+    attackModifier
+    <input name="attackModifier" value="@Model.DamagedCharacter.AttackModifier"/>
+    AttackPerRound
+    <input name="AttackPerRound" value="@Model.DamagedCharacter.AttackPerRound"/>
+    Damage
+    <input name="Damage" value="@Model.DamagedCharacter.Damage"/>
+    DiceType
+    <input name="DiceType" value="@Model.DamagedCharacter.DiceType"/>
+    DamageModifier
+    <input name="DamageModifier" value="@Model.DamagedCharacter.DamageModifier"/>
+    Weapon
+    <input name="Weapon" value="@Model.DamagedCharacter.Weapon"/>
+    Ac
+    <input name="Ac" value="@Model.DamagedCharacter.Ac"/>
+    <input type="submit" value="@Model.DamagedCharacter.Name"/>
+</form>

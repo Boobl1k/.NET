@@ -12,12 +12,13 @@ public class HomeController : Controller
 
 
     private record FightStartingModel(Character Player, Character Monster);
-    private record FightResult(string Log);
+    public record FightResult(string Log, Character player);
 
-    public record FightModel(CalculatedCharacter Character, string Log);
+    public record FightModel(CalculatedCharacter Character, string Log, Character DamagedCharacter);
 
     public async Task<IActionResult> Fight(Character player)
     {
+        Console.WriteLine(player.Name);
         var q = await _client.GetAsync("https://localhost:7099/GetRandomMonster");
         var monster = await q.Content.ReadFromJsonAsync<Character>();
         var w =
@@ -26,7 +27,7 @@ public class HomeController : Controller
 
         var e = await _client.PostAsync("https://localhost:7263/Fight",
             JsonContent.Create(new FightStartingModel(player, monster!)));
-        var log = (await e.Content.ReadFromJsonAsync<FightResult>())!.Log;
-        return View(new FightModel(calculated!, log));
+        var fightResult = await e.Content.ReadFromJsonAsync<FightResult>();
+        return View(new FightModel(calculated!, fightResult!.Log, fightResult.player));
     }
 }
