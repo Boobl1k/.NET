@@ -1,0 +1,10 @@
+﻿@model Character
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form asp-controller="Home" asp-action="Fight">
+    @Html.EditorForModel();
+    <input type="submit"/>
+</form>
