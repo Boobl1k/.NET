@@ -1,0 +1,15 @@
+@model Dnd.Ui.Controllers.HomeController.FightModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@Html.DisplayFor(model => model.Character)
+
+@foreach (var str in Model!.Log.Split('\n'))
+{
+    <p>@str</p>
+}
+
+
