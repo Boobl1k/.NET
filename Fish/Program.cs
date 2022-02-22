@@ -18,6 +18,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseWebSockets();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
