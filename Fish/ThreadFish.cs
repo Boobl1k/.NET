@@ -2,14 +2,18 @@ namespace Fish;
 
 public class ThreadFish : FishBase
 {
-    public override void Start()
+    public override FishBase Start()
     {
         new Thread(() =>
         {
-            X = (X = Speed) % 500;
-            ThreadId = Thread.GetCurrentProcessorId();
-            Thread.Sleep(20);
+            while (!Stop)
+            {
+                X = (X + Speed) % 500;
+                ThreadId = Environment.CurrentManagedThreadId;
+                Thread.Sleep(20);
+            }
         }).Start();
+        return this;
     }
 
     public ThreadFish(int speed) : base(speed)

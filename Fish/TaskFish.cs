@@ -2,17 +2,20 @@ namespace Fish;
 
 public class TaskFish : FishBase
 {
-    public override void Start()
+    public override FishBase Start()
     {
-        Task.Run(() =>
+        _Start();
+        return this;
+    }
+
+    private async Task _Start()
+    {
+        while (!Stop)
         {
-            while (true)
-            {
-                X = (X = Speed) % 500;
-                ThreadId = Thread.GetCurrentProcessorId();
-                Task.Delay(20);
-            }
-        });
+            X = (X + Speed) % 500;
+            ThreadId = Environment.CurrentManagedThreadId;
+            await Task.Delay(20);
+        }
     }
 
     public TaskFish(int speed) : base(speed)
