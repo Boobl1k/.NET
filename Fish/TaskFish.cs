@@ -12,13 +12,11 @@ public class TaskFish : FishBase
     {
         while (!Stop)
         {
-            X = (X + Speed) % 500;
-            ThreadId = Environment.CurrentManagedThreadId;
-            await Task.Delay(20);
+            Move();
+            await Task.Delay(5);
         }
     }
 
-    public TaskFish(int speed) : base(speed)
-    {
-    }
+    public TaskFish(int speed) : base(speed) => 
+        Type = 1;
 }

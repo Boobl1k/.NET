@@ -5,16 +5,15 @@ namespace Fish;
 
 public static class Aquarium
 {
-    private const int maxSpeed = 10;
-    private const int maxCount = 10;
+    private const int maxCount = 30;
     private static List<FishBase> Fishes { get; } = new();
 
-    public static bool TryAddFish(bool task)
+    public static bool TryAddFish(bool task, int speed)
     {
         if (Fishes.Count >= maxCount) return false;
         Fishes.Add(((FishBase) (task
-            ? new TaskFish(Random.Shared.Next(maxSpeed) + 1)
-            : new ThreadFish(Random.Shared.Next(maxSpeed) + 1))).Start());
+            ? new TaskFish(speed)
+            : new ThreadFish(speed))).Start());
         return true;
     }
 
@@ -22,6 +21,5 @@ public static class Aquarium
         Fishes.Remove(Fishes.FirstOrDefault(fish => fish.Id == id)!);
 
     public static string GetAllJson() =>
-        Fishes.Aggregate(new StringBuilder(), (builder, fish) => builder.Append(JsonSerializer.Serialize(fish)))
-            .ToString();
+        JsonSerializer.Serialize(Fishes);
 }

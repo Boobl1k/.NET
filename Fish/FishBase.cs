@@ -5,6 +5,7 @@ public abstract class FishBase
     private static readonly object locker = new();
     private static int _prevId = 1000;
 
+    public int Type { get; protected set; }
     public int Id { get; }
 
     private volatile int _x;
@@ -45,4 +46,29 @@ public abstract class FishBase
     }
 
     public abstract FishBase Start();
+
+    private bool _goingLeft = false;
+    protected void Move()
+    {
+        if (!_goingLeft)
+        {
+            X += Speed;
+            if (X >= 500)
+            {
+                _goingLeft = true;
+                X = 999 - X;
+            }
+        }
+        else
+        {
+            X -= Speed;
+            if (X < 0)
+            {
+                _goingLeft = false;
+                X = -X;
+            }
+        }
+
+        ThreadId = Environment.CurrentManagedThreadId;
+    }
 }

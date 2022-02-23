@@ -27,7 +27,7 @@ public class FishesWebSocketsMiddleware
                     true,
                     context.RequestAborted);
                 //result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), context.RequestAborted);
-                await Task.Delay(1000);
+                await Task.Delay(5);
             }
 
             await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, context.RequestAborted);

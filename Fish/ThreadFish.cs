@@ -8,15 +8,13 @@ public class ThreadFish : FishBase
         {
             while (!Stop)
             {
-                X = (X + Speed) % 500;
-                ThreadId = Environment.CurrentManagedThreadId;
-                Thread.Sleep(20);
+                Move();
+                Thread.Sleep(5);
             }
         }).Start();
         return this;
     }
 
-    public ThreadFish(int speed) : base(speed)
-    {
-    }
+    public ThreadFish(int speed) : base(speed) => 
+        Type = 2;
 }
