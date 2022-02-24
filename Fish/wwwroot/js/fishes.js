@@ -24,13 +24,13 @@ socket.onerror = function (error) {
     alert(`[error] ${error.message}`);
 };
 
-const redStart = 128;
-const greenStart = 0;
-const blueStart = 255;
+const redStart = 0;
+const greenStart = 255;
+const blueStart = 128;
 
-const redEnd = 128;
-const greenEnd = 255;
-const blueEnd = 0;
+const redEnd = 255;
+const greenEnd = 0;
+const blueEnd = 128;
 
 let iteration = 0;
 
@@ -62,13 +62,14 @@ function ProcessFishDataArray(fishDataArray) {
 }
 
 function CreateFish(fishData) {
-    const fish = document.createElement('div');
+    const fish = document.createElement('img');
+    
     fish.style.width = '50px';
     fish.style.height = '50px';
     if (fishData.Type === 1)
-        fish.style.backgroundColor = 'red';
+        fish.src='https://sun1-93.userapi.com/s/v1/if1/dpkXjn6pzHF175jemfuiiXDexiquMmiCI3ZiH9oWzozomD0O37ifRPfIP4h7L_ZzmjUIUlCX.jpg?size=50x0&quality=96&crop=480,120,960,960&ava=1';
     else if (fishData.Type === 2)
-        fish.style.backgroundColor = 'yellow';
+        fish.src='https://sun6-20.userapi.com/s/v1/ig1/fxZ8ZC5zhxjWp2Mv7xZbv2OfEKoa2s7hF7avdLRaXLhe3yMEUXx83yCBcw2yVqJuJPz5KPvw.jpg?size=50x50&quality=96&crop=277,0,799,799&ava=1';
     else
         fish.style.backgroundColor = '#000000';
 
