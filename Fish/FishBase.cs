@@ -11,9 +11,17 @@ public abstract class FishBase
     private volatile int _x;
     private volatile int _y;
 
+    private readonly object _xLock = new();
+
     public int X
     {
-        get => _x;
+        get
+        {
+            lock (_xLock)
+            {
+                return _x;
+            }
+        }
         set => _x = value;
     }
 
@@ -48,27 +56,31 @@ public abstract class FishBase
     public abstract FishBase Start();
 
     private bool _goingLeft = false;
-    protected void Move()
+
+    protected virtual void Move()
     {
-        if (!_goingLeft)
+        lock (_xLock)
         {
-            X += Speed;
-            if (X >= 500)
+            if (!_goingLeft)
             {
+                X += Speed;
+                if (X < 500) return;
                 _goingLeft = true;
-                X = 999 - X;
+                X = 1000 - X;
             }
-        }
-        else
-        {
-            X -= Speed;
-            if (X < 0)
+            else
             {
+                X -= Speed;
+                if (X >= 0) return;
                 _goingLeft = false;
                 X = -X;
             }
         }
+    }
 
+    protected void MakeStep()
+    {
+        Move();
         ThreadId = Environment.CurrentManagedThreadId;
     }
 }

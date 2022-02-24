@@ -8,7 +8,7 @@ public class ThreadFish : FishBase
         {
             while (!Stop)
             {
-                Move();
+                MakeStep();
                 Thread.Sleep(5);
             }
         }).Start();

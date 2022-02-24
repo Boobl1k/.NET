@@ -12,7 +12,7 @@ public class TaskFish : FishBase
     {
         while (!Stop)
         {
-            Move();
+            MakeStep();
             await Task.Delay(5);
         }
     }
