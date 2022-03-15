@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ui", "Dnd.Ui\Dnd.Ui.csproj", "{75AC6F7F-2305-4CCE-BD68-898C3CE23CE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Business", "Dnd.Business\Dnd.Business.csproj", "{3863DA19-89DE-4D6C-8DAD-83637FFF0B4E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Db", "Dnd.Db\Dnd.Db.csproj", "{AB68DE77-7ABD-42AE-9AF1-CF29E87815C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fish", "Fish\Fish.csproj", "{28DFCEA9-BD8A-41E8-BAA2-FBE75DD593A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{75AC6F7F-2305-4CCE-BD68-898C3CE23CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75AC6F7F-2305-4CCE-BD68-898C3CE23CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75AC6F7F-2305-4CCE-BD68-898C3CE23CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75AC6F7F-2305-4CCE-BD68-898C3CE23CE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3863DA19-89DE-4D6C-8DAD-83637FFF0B4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3863DA19-89DE-4D6C-8DAD-83637FFF0B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3863DA19-89DE-4D6C-8DAD-83637FFF0B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3863DA19-89DE-4D6C-8DAD-83637FFF0B4E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB68DE77-7ABD-42AE-9AF1-CF29E87815C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB68DE77-7ABD-42AE-9AF1-CF29E87815C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB68DE77-7ABD-42AE-9AF1-CF29E87815C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB68DE77-7ABD-42AE-9AF1-CF29E87815C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28DFCEA9-BD8A-41E8-BAA2-FBE75DD593A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28DFCEA9-BD8A-41E8-BAA2-FBE75DD593A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28DFCEA9-BD8A-41E8-BAA2-FBE75DD593A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28DFCEA9-BD8A-41E8-BAA2-FBE75DD593A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

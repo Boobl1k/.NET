@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div style="position: relative">
+    <div id="aquariumBack" style="position: absolute; width: 550px; height: 550px; background-color: cornflowerblue">
+        <div id="aquarium" style="position: relative; width: 550px; height: 550px;"></div>
+
+    </div>
+
+    <input type="number" id="fishSpeedInput" style="position: absolute; left: 600px"/>
+    <button onclick="fetch('https://localhost:7214/Fishes/AddTaskFish?speed=' + fishSpeedInput.value)" style="position: absolute; left: 600px; top: 50px">Add task fish</button>
+    <button onclick="fetch('https://localhost:7214/Fishes/AddThreadFish?speed=' + fishSpeedInput.value)" style="position: absolute; left: 600px; top: 100px">Add thread fish</button>
+</div>
+
+<script src="~/js/fishes.js"></script>
